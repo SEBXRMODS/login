@@ -87,10 +87,9 @@ font-size:20px;
 margin-bottom:20px;
 }
 
-/* POPUP */
+/* POPUPS */
 
 .popup{
-
 display:none;
 position:fixed;
 top:0;
@@ -101,28 +100,33 @@ background:rgba(0,0,0,0.8);
 justify-content:center;
 align-items:center;
 z-index:999;
-
 }
 
 .popup-content{
-
 background:#111;
 border:2px solid #00ff88;
 padding:30px;
 border-radius:15px;
-width:300px;
+width:320px;
 text-align:center;
 box-shadow:0 0 20px #00ff88;
-
 }
 
 .cerrar{
-
 float:right;
 font-size:30px;
 cursor:pointer;
 color:#00ff88;
+}
 
+#precioFinal{
+font-size:22px;
+color:#00ff88;
+margin-top:10px;
+}
+
+a{
+text-decoration:none;
 }
 
 </style>
@@ -154,18 +158,125 @@ Entrar
 
 <h1>TIENDA</h1>
 
-<!-- CREDITOS -->
-
 <div class="card">
 
 <div class="creditos">
+
+<button onclick="abrirCreditos()">
+
 💰 Créditos:
 <span id="creditos">0</span>
+
+</button>
+
 </div>
 
-<h3>Métodos de pago</h3>
+</div>
 
-<!-- CAMBIA AQUI TUS CUENTAS -->
+<!-- PRODUCTOS -->
+
+<div class="grid">
+
+<!-- PRODUCTO -->
+
+<div class="product">
+
+<img src="https://i.imgur.com/0rVeh4A.png">
+
+<h2>Spotify Premium</h2>
+
+<p>
+Cuenta premium 1 mes
+</p>
+
+<div class="price">
+100 créditos
+</div>
+
+<button onclick="comprar(100)">
+Comprar
+</button>
+
+<button onclick="verCaracteristicas(
+'Spotify Premium',
+'• 1 mes\n• Premium\n• Sin anuncios\n• Calidad alta'
+)">
+Características
+</button>
+
+</div>
+
+<!-- PRODUCTO -->
+
+<div class="product">
+
+<img src="https://i.imgur.com/u6dF9V7.png">
+
+<h2>Netflix UHD</h2>
+
+<p>
+Cuenta UHD 1 mes
+</p>
+
+<div class="price">
+150 créditos
+</div>
+
+<button onclick="comprar(150)">
+Comprar
+</button>
+
+<button onclick="verCaracteristicas(
+'Netflix UHD',
+'• UHD 4K\n• Perfil privado\n• 1 mes'
+)">
+Características
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- POPUP CREDITOS -->
+
+<div id="popupCreditos" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar"
+onclick="cerrarCreditos()">
+
+×
+
+</span>
+
+<h2>RECARGAR CRÉDITOS</h2>
+
+<p>
+Actualmente tienes:
+<b id="creditosActuales">0</b>
+créditos
+</p>
+
+<input
+type="number"
+id="cantidadCreditos"
+placeholder="Cantidad de créditos"
+oninput="calcularPrecio()">
+
+<p id="precioFinal">
+Total: $0 COP
+</p>
+
+<button onclick="mostrarMetodos()">
+RECARGAR
+</button>
+
+<div id="metodosPago" style="display:none;">
+
+<h3>Métodos de pago</h3>
 
 <button onclick="mostrarPago(
 'NEQUI',
@@ -188,27 +299,63 @@ PAYPAL
 BINANCE
 </button>
 
+<br><br>
+
+<a
+href="https://wa.me/573001234567"
+target="_blank">
+
+<button>
+
+ENVIAR COMPROBANTE
+
+</button>
+
+</a>
+
 </div>
 
-<!-- PRODUCTOS -->
-
-<div class="grid" id="productos"></div>
+</div>
 
 </div>
 
-<!-- POPUP -->
+<!-- POPUP PAGOS -->
 
-<div id="popup" class="popup">
+<div id="popupPago" class="popup">
 
 <div class="popup-content">
 
-<span class="cerrar" onclick="cerrarPopup()">
+<span class="cerrar"
+onclick="cerrarPago()">
+
 ×
+
 </span>
 
 <h2 id="tituloPago"></h2>
 
 <p id="infoPago"></p>
+
+</div>
+
+</div>
+
+<!-- POPUP CARACTERISTICAS -->
+
+<div id="popupCaracteristicas" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar"
+onclick="cerrarCaracteristicas()">
+
+×
+
+</span>
+
+<h2 id="tituloProducto"></h2>
+
+<p id="infoProducto"></p>
 
 </div>
 
@@ -247,8 +394,6 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-// LOGIN
-
 window.login = async function(){
 
 const email =
@@ -274,8 +419,6 @@ document.getElementById("error").innerHTML =
 
 }
 
-// SESION
-
 onAuthStateChanged(auth, async(user)=>{
 
 if(user){
@@ -285,8 +428,6 @@ document.getElementById("loginBox").style.display =
 
 document.getElementById("panel").style.display =
 "block";
-
-// CREDITOS
 
 const userRef =
 doc(db,"users",user.uid);
@@ -304,93 +445,125 @@ datos.creditos || 0;
 
 }
 
-// ==========================
-// PRODUCTOS
-// ==========================
-
-document.getElementById("productos").innerHTML = `
-
-<!-- ================================= -->
-<!-- PRODUCTO 1 -->
-<!-- ================================= -->
-
-<div class="product">
-
-<!-- IMAGEN -->
-
-<img src="https://i.imgur.com/0rVeh4A.png">
-
-<!-- NOMBRE -->
-
-<h2>Spotify Premium</h2>
-
-<!-- FUNCION -->
-
-<p>
-Cuenta premium 1 mes
-</p>
-
-<!-- PRECIO -->
-
-<div class="price">
-100 créditos
-</div>
-
-<button>
-Comprar
-</button>
-
-</div>
-
-<!-- ================================= -->
-<!-- PRODUCTO 2 -->
-<!-- ================================= -->
-
-<div class="product">
-
-<img src="https://i.imgur.com/u6dF9V7.png">
-
-<h2>Netflix</h2>
-
-<p>
-Cuenta UHD 1 mes
-</p>
-
-<div class="price">
-150 créditos
-</div>
-
-<button>
-Comprar
-</button>
-
-</div>
-
-`;
-
 }
 
 });
 
-// POPUP PAGOS
+window.abrirCreditos = function(){
 
-window.mostrarPago = function(titulo,info){
+document.getElementById("popupCreditos")
+.style.display = "flex";
 
-document.getElementById("popup").style.display =
-"flex";
-
-document.getElementById("tituloPago").innerHTML =
-titulo;
-
-document.getElementById("infoPago").innerHTML =
-info;
+document.getElementById("creditosActuales")
+.innerHTML =
+document.getElementById("creditos")
+.innerHTML;
 
 }
 
-window.cerrarPopup = function(){
+window.cerrarCreditos = function(){
 
-document.getElementById("popup").style.display =
-"none";
+document.getElementById("popupCreditos")
+.style.display = "none";
+
+}
+
+window.calcularPrecio = function(){
+
+let creditos =
+parseInt(
+document.getElementById(
+"cantidadCreditos"
+).value
+) || 0;
+
+let precioPorCredito = 50;
+
+let total =
+creditos * precioPorCredito;
+
+document.getElementById(
+"precioFinal"
+).innerHTML =
+
+"Total: $" +
+total.toLocaleString() +
+" COP";
+
+}
+
+window.mostrarMetodos = function(){
+
+document.getElementById("metodosPago")
+.style.display = "block";
+
+}
+
+window.comprar = function(precio){
+
+let creditos =
+parseInt(
+document.getElementById("creditos")
+.innerHTML
+);
+
+if(creditos < precio){
+
+abrirCreditos();
+
+return;
+
+}
+
+alert("Compra realizada");
+
+}
+
+window.verCaracteristicas = function(
+titulo,
+info
+){
+
+document.getElementById(
+"popupCaracteristicas"
+).style.display = "flex";
+
+document.getElementById(
+"tituloProducto"
+).innerHTML = titulo;
+
+document.getElementById(
+"infoProducto"
+).innerText = info;
+
+}
+
+window.cerrarCaracteristicas =
+function(){
+
+document.getElementById(
+"popupCaracteristicas"
+).style.display = "none";
+
+}
+
+window.mostrarPago = function(titulo,info){
+
+document.getElementById("popupPago")
+.style.display = "flex";
+
+document.getElementById("tituloPago")
+.innerHTML = titulo;
+
+document.getElementById("infoPago")
+.innerHTML = info;
+
+}
+
+window.cerrarPago = function(){
+
+document.getElementById("popupPago")
+.style.display = "none";
 
 }
 
