@@ -1,5 +1,6 @@
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -86,6 +87,44 @@ font-size:20px;
 margin-bottom:20px;
 }
 
+/* POPUP */
+
+.popup{
+
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+z-index:999;
+
+}
+
+.popup-content{
+
+background:#111;
+border:2px solid #00ff88;
+padding:30px;
+border-radius:15px;
+width:300px;
+text-align:center;
+box-shadow:0 0 20px #00ff88;
+
+}
+
+.cerrar{
+
+float:right;
+font-size:30px;
+cursor:pointer;
+color:#00ff88;
+
+}
+
 </style>
 
 </head>
@@ -126,17 +165,26 @@ Entrar
 
 <h3>Métodos de pago</h3>
 
-<!-- AQUI CAMBIAS LAS CUENTAS -->
+<!-- CAMBIA AQUI TUS CUENTAS -->
 
-<button onclick="mostrarPago('Nequi: 3001234567')">
+<button onclick="mostrarPago(
+'NEQUI',
+'Número: 3001234567'
+)">
 NEQUI
 </button>
 
-<button onclick="mostrarPago('PayPal: pagos@correo.com')">
+<button onclick="mostrarPago(
+'PAYPAL',
+'Correo: pagos@correo.com'
+)">
 PAYPAL
 </button>
 
-<button onclick="mostrarPago('Binance ID: 123456789')">
+<button onclick="mostrarPago(
+'BINANCE',
+'ID: 123456789'
+)">
 BINANCE
 </button>
 
@@ -145,6 +193,24 @@ BINANCE
 <!-- PRODUCTOS -->
 
 <div class="grid" id="productos"></div>
+
+</div>
+
+<!-- POPUP -->
+
+<div id="popup" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar" onclick="cerrarPopup()">
+×
+</span>
+
+<h2 id="tituloPago"></h2>
+
+<p id="infoPago"></p>
+
+</div>
 
 </div>
 
@@ -208,7 +274,7 @@ document.getElementById("error").innerHTML =
 
 }
 
-// CUANDO INICIA SESION
+// SESION
 
 onAuthStateChanged(auth, async(user)=>{
 
@@ -238,9 +304,9 @@ datos.creditos || 0;
 
 }
 
-// =======================
+// ==========================
 // PRODUCTOS
-// =======================
+// ==========================
 
 document.getElementById("productos").innerHTML = `
 
@@ -250,21 +316,21 @@ document.getElementById("productos").innerHTML = `
 
 <div class="product">
 
-<!-- AQUI PONES LA IMAGEN -->
+<!-- IMAGEN -->
 
 <img src="https://i.imgur.com/0rVeh4A.png">
 
-<!-- AQUI PONES EL NOMBRE -->
+<!-- NOMBRE -->
 
 <h2>Spotify Premium</h2>
 
-<!-- AQUI PONES LA FUNCION -->
+<!-- FUNCION -->
 
 <p>
 Cuenta premium 1 mes
 </p>
 
-<!-- AQUI PONES EL PRECIO -->
+<!-- PRECIO -->
 
 <div class="price">
 100 créditos
@@ -306,11 +372,25 @@ Comprar
 
 });
 
-// MOSTRAR PAGOS
+// POPUP PAGOS
 
-window.mostrarPago = function(info){
+window.mostrarPago = function(titulo,info){
 
-alert(info);
+document.getElementById("popup").style.display =
+"flex";
+
+document.getElementById("tituloPago").innerHTML =
+titulo;
+
+document.getElementById("infoPago").innerHTML =
+info;
+
+}
+
+window.cerrarPopup = function(){
+
+document.getElementById("popup").style.display =
+"none";
 
 }
 
