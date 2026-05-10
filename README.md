@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -53,6 +52,7 @@ background:#00ff88;
 color:black;
 font-weight:bold;
 cursor:pointer;
+margin:5px;
 }
 
 .grid{
@@ -91,6 +91,8 @@ margin-bottom:20px;
 </head>
 <body>
 
+<!-- LOGIN -->
+
 <div id="loginBox" class="card">
 
 <h1>LOGIN</h1>
@@ -107,9 +109,13 @@ Entrar
 
 </div>
 
+<!-- PANEL -->
+
 <div id="panel" style="display:none;">
 
 <h1>TIENDA</h1>
+
+<!-- CREDITOS -->
 
 <div class="card">
 
@@ -120,17 +126,23 @@ Entrar
 
 <h3>Métodos de pago</h3>
 
-<ul>
-<li>Nequi</li>
-<li>PayPal</li>
-<li>Binance</li>
-</ul>
+<!-- AQUI CAMBIAS LAS CUENTAS -->
 
-<p>
-Después de pagar tú agregas créditos manualmente desde Firebase.
-</p>
+<button onclick="mostrarPago('Nequi: 3001234567')">
+NEQUI
+</button>
+
+<button onclick="mostrarPago('PayPal: pagos@correo.com')">
+PAYPAL
+</button>
+
+<button onclick="mostrarPago('Binance ID: 123456789')">
+BINANCE
+</button>
 
 </div>
+
+<!-- PRODUCTOS -->
 
 <div class="grid" id="productos"></div>
 
@@ -149,10 +161,7 @@ onAuthStateChanged
 import {
 getFirestore,
 doc,
-getDoc,
-collection,
-getDocs,
-updateDoc
+getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -171,6 +180,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+
+// LOGIN
 
 window.login = async function(){
 
@@ -197,6 +208,8 @@ document.getElementById("error").innerHTML =
 
 }
 
+// CUANDO INICIA SESION
+
 onAuthStateChanged(auth, async(user)=>{
 
 if(user){
@@ -207,8 +220,7 @@ document.getElementById("loginBox").style.display =
 document.getElementById("panel").style.display =
 "block";
 
-
-// CARGAR CREDITOS
+// CREDITOS
 
 const userRef =
 doc(db,"users",user.uid);
@@ -226,33 +238,63 @@ datos.creditos || 0;
 
 }
 
+// =======================
+// PRODUCTOS
+// =======================
 
-// CARGAR PRODUCTOS
+document.getElementById("productos").innerHTML = `
 
-const querySnapshot =
-await getDocs(collection(db,"productos"));
-
-let html = "";
-
-querySnapshot.forEach((docu)=>{
-
-const p = docu.data();
-
-html += `
+<!-- ================================= -->
+<!-- PRODUCTO 1 -->
+<!-- ================================= -->
 
 <div class="product">
 
-<img src="${p.imagen}">
+<!-- AQUI PONES LA IMAGEN -->
 
-<h2>${p.nombre}</h2>
+<img src="https://i.imgur.com/0rVeh4A.png">
 
-<p>${p.funcion}</p>
+<!-- AQUI PONES EL NOMBRE -->
+
+<h2>Spotify Premium</h2>
+
+<!-- AQUI PONES LA FUNCION -->
+
+<p>
+Cuenta premium 1 mes
+</p>
+
+<!-- AQUI PONES EL PRECIO -->
 
 <div class="price">
-${p.precio} créditos
+100 créditos
 </div>
 
-<button onclick="comprar('${docu.id}',${p.precio})">
+<button>
+Comprar
+</button>
+
+</div>
+
+<!-- ================================= -->
+<!-- PRODUCTO 2 -->
+<!-- ================================= -->
+
+<div class="product">
+
+<img src="https://i.imgur.com/u6dF9V7.png">
+
+<h2>Netflix</h2>
+
+<p>
+Cuenta UHD 1 mes
+</p>
+
+<div class="price">
+150 créditos
+</div>
+
+<button>
 Comprar
 </button>
 
@@ -260,50 +302,15 @@ Comprar
 
 `;
 
-});
-
-document.getElementById("productos").innerHTML =
-html;
-
 }
 
 });
 
-window.comprar = async function(id,precio){
+// MOSTRAR PAGOS
 
-const user =
-auth.currentUser;
+window.mostrarPago = function(info){
 
-const userRef =
-doc(db,"users",user.uid);
-
-const userSnap =
-await getDoc(userRef);
-
-const datos =
-userSnap.data();
-
-let creditos =
-datos.creditos || 0;
-
-if(creditos < precio){
-
-alert("No tienes suficientes créditos");
-
-return;
-
-}
-
-creditos -= precio;
-
-await updateDoc(userRef,{
-creditos:creditos
-});
-
-document.getElementById("creditos").innerHTML =
-creditos;
-
-alert("Compra realizada");
+alert(info);
 
 }
 
