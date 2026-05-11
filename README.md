@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
 
@@ -138,14 +139,14 @@ text-decoration:none;
 
 <div id="loginBox" class="card">
 
-<h1>LOGIN</h1>
+<h1>LOGIN / REGISTRO</h1>
 
 <input type="email" id="email" placeholder="Correo">
 
 <input type="password" id="password" placeholder="Contraseña">
 
 <button onclick="login()">
-Entrar
+Entrar o Registrarse
 </button>
 
 <p id="error"></p>
@@ -177,19 +178,11 @@ Entrar
 
 <div class="grid">
 
-<!-- PRODUCTO -->
-
 <div class="product">
-
-<!-- CAMBIAR IMAGEN -->
 
 <img src="https://i.imgur.com/0rVeh4A.png">
 
-<!-- CAMBIAR NOMBRE -->
-
 <h2>Panel Sebxr Mods</h2>
-
-<!-- CAMBIAR DESCRIPCION -->
 
 <p>
 panel sin black/ban
@@ -216,8 +209,6 @@ Características
 </button>
 
 </div>
-
-<!-- PRODUCTO -->
 
 <div class="product">
 
@@ -294,8 +285,6 @@ RECARGAR
 
 <h3>Métodos de pago</h3>
 
-<!-- CAMBIAR DATOS -->
-
 <button onclick="mostrarPago(
 'NEQUI',
 'Número: 3001234567'
@@ -319,16 +308,12 @@ BINANCE
 
 <br><br>
 
-<!-- CAMBIAR WHATSAPP -->
-
 <a
 href="https://wa.me/573001234567"
 target="_blank">
 
 <button>
-
 ENVIAR COMPROBANTE
-
 </button>
 
 </a>
@@ -447,6 +432,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
 getAuth,
 signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
 onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -483,7 +469,7 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-// LOGIN
+// LOGIN / REGISTRO
 
 window.login = async function(){
 
@@ -503,8 +489,20 @@ password
 
 }catch(err){
 
-document.getElementById("error").innerHTML =
-"Login incorrecto";
+try{
+
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+}catch(error){
+
+document.getElementById("error")
+.innerHTML = error.message;
+
+}
 
 }
 
@@ -516,11 +514,11 @@ onAuthStateChanged(auth, async(user)=>{
 
 if(user){
 
-document.getElementById("loginBox").style.display =
-"none";
+document.getElementById("loginBox")
+.style.display = "none";
 
-document.getElementById("panel").style.display =
-"block";
+document.getElementById("panel")
+.style.display = "block";
 
 const userRef =
 doc(db,"users",user.uid);
@@ -528,7 +526,7 @@ doc(db,"users",user.uid);
 const userSnap =
 await getDoc(userRef);
 
-// SI NO EXISTE
+// CREAR USUARIO SI NO EXISTE
 
 if(!userSnap.exists()){
 
@@ -732,25 +730,15 @@ document.getElementById(
 
 if(creditos < precio){
 
-// CERRAR DURACIONES
-
 cerrarDuraciones();
 
-// ABRIR CREDITOS
-
 abrirCreditos();
-
-// PONER CREDITOS NECESARIOS
 
 document.getElementById(
 "cantidadCreditos"
 ).value = precio;
 
-// CALCULAR PRECIO
-
 calcularPrecio();
-
-// MOSTRAR METODOS
 
 document.getElementById(
 "metodosPago"
@@ -775,8 +763,6 @@ precio +
 " créditos"
 
 );
-
-// CERRAR DURACIONES
 
 cerrarDuraciones();
 
