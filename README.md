@@ -177,41 +177,33 @@ Entrar
 
 <div class="grid">
 
-<!-- ======================================= -->
-<!-- PRODUCTO 1 -->
-<!-- ======================================= -->
+<!-- PRODUCTO -->
 
 <div class="product">
 
-<!-- AQUI CAMBIAS LA IMAGEN -->
+<!-- CAMBIAR IMAGEN -->
 
 <img src="https://i.imgur.com/0rVeh4A.png">
 
-<!-- AQUI CAMBIAS EL NOMBRE -->
+<!-- CAMBIAR NOMBRE -->
 
 <h2>Panel Sebxr Mods</h2>
 
-<!-- AQUI CAMBIAS LA DESCRIPCION -->
+<!-- CAMBIAR DESCRIPCION -->
 
 <p>
 panel sin black/ban
 </p>
 
-<!-- PRECIO -->
-
 <div class="price">
 Desde 20 créditos
 </div>
-
-<!-- BOTON COMPRAR -->
 
 <button onclick="abrirDuraciones(
 'Panel Sebxr Mods'
 )">
 Comprar
 </button>
-
-<!-- CARACTERISTICAS -->
 
 <button onclick="verCaracteristicas(
 
@@ -225,9 +217,7 @@ Características
 
 </div>
 
-<!-- ======================================= -->
-<!-- PRODUCTO 2 -->
-<!-- ======================================= -->
+<!-- PRODUCTO -->
 
 <div class="product">
 
@@ -304,7 +294,7 @@ RECARGAR
 
 <h3>Métodos de pago</h3>
 
-<!-- AQUI CAMBIAS TUS DATOS -->
+<!-- CAMBIAR DATOS -->
 
 <button onclick="mostrarPago(
 'NEQUI',
@@ -329,7 +319,7 @@ BINANCE
 
 <br><br>
 
-<!-- AQUI CAMBIAS TU WHATSAPP -->
+<!-- CAMBIAR WHATSAPP -->
 
 <a
 href="https://wa.me/573001234567"
@@ -463,12 +453,11 @@ onAuthStateChanged
 import {
 getFirestore,
 doc,
-getDoc
+getDoc,
+setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// =======================================
-// NUEVO FIREBASE
-// =======================================
+// FIREBASE
 
 const firebaseConfig = {
 
@@ -527,8 +516,6 @@ onAuthStateChanged(auth, async(user)=>{
 
 if(user){
 
-console.log(user.uid);
-
 document.getElementById("loginBox").style.display =
 "none";
 
@@ -541,15 +528,34 @@ doc(db,"users",user.uid);
 const userSnap =
 await getDoc(userRef);
 
-if(userSnap.exists()){
+// SI NO EXISTE
 
-const datos =
-userSnap.data();
+if(!userSnap.exists()){
 
-document.getElementById("creditos").innerHTML =
-datos.creditos || 0;
+await setDoc(userRef,{
+
+email:user.email,
+
+uid:user.uid,
+
+creditos:0
+
+});
 
 }
+
+// LEER DATOS
+
+const nuevoSnap =
+await getDoc(userRef);
+
+const datos =
+nuevoSnap.data();
+
+document.getElementById(
+"creditos"
+).innerHTML =
+datos.creditos || 0;
 
 }
 
@@ -559,13 +565,17 @@ datos.creditos || 0;
 
 window.abrirCreditos = function(){
 
-document.getElementById("popupCreditos")
-.style.display = "flex";
+document.getElementById(
+"popupCreditos"
+).style.display = "flex";
 
-document.getElementById("creditosActuales")
-.innerHTML =
-document.getElementById("creditos")
-.innerHTML;
+document.getElementById(
+"creditosActuales"
+).innerHTML =
+
+document.getElementById(
+"creditos"
+).innerHTML;
 
 }
 
@@ -573,8 +583,9 @@ document.getElementById("creditos")
 
 window.cerrarCreditos = function(){
 
-document.getElementById("popupCreditos")
-.style.display = "none";
+document.getElementById(
+"popupCreditos"
+).style.display = "none";
 
 }
 
@@ -608,12 +619,13 @@ total.toLocaleString() +
 
 window.mostrarMetodos = function(){
 
-document.getElementById("metodosPago")
-.style.display = "block";
+document.getElementById(
+"metodosPago"
+).style.display = "block";
 
 }
 
-// CARACTERISTICAS
+// VER CARACTERISTICAS
 
 window.verCaracteristicas = function(
 titulo,
@@ -634,6 +646,8 @@ document.getElementById(
 
 }
 
+// CERRAR CARACTERISTICAS
+
 window.cerrarCaracteristicas =
 function(){
 
@@ -643,31 +657,42 @@ document.getElementById(
 
 }
 
-// PAGOS
+// MOSTRAR PAGO
 
-window.mostrarPago = function(titulo,info){
+window.mostrarPago = function(
+titulo,
+info
+){
 
-document.getElementById("popupPago")
-.style.display = "flex";
+document.getElementById(
+"popupPago"
+).style.display = "flex";
 
-document.getElementById("tituloPago")
-.innerHTML = titulo;
+document.getElementById(
+"tituloPago"
+).innerHTML = titulo;
 
-document.getElementById("infoPago")
-.innerHTML = info;
+document.getElementById(
+"infoPago"
+).innerHTML = info;
 
 }
 
+// CERRAR PAGO
+
 window.cerrarPago = function(){
 
-document.getElementById("popupPago")
-.style.display = "none";
+document.getElementById(
+"popupPago"
+).style.display = "none";
 
 }
 
 // ABRIR DURACIONES
 
-window.abrirDuraciones = function(prod){
+window.abrirDuraciones = function(
+prod
+){
 
 document.getElementById(
 "popupDuraciones"
@@ -709,9 +734,7 @@ if(creditos < precio){
 
 // CERRAR DURACIONES
 
-document.getElementById(
-"popupDuraciones"
-).style.display = "none";
+cerrarDuraciones();
 
 // ABRIR CREDITOS
 
