@@ -1,3 +1,7 @@
+<!-- ========================= -->
+<!-- index.html -->
+<!-- ========================= -->
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -137,17 +141,12 @@ Recargar Créditos
 
 <div class="grid">
 
-<!-- PRODUCTO 1 -->
-
 <div class="product">
 
-<!-- CAMBIAR IMAGEN -->
 <img src="https://i.imgur.com/0rVeh4A.png">
 
-<!-- CAMBIAR NOMBRE -->
 <h2>Panel Sebxr Mods</h2>
 
-<!-- CAMBIAR DESCRIPCION -->
 <p>Panel premium sin blacklist</p>
 
 <button onclick="abrirDuraciones('Panel Sebxr Mods')">
@@ -155,8 +154,6 @@ Comprar
 </button>
 
 </div>
-
-<!-- PRODUCTO 2 -->
 
 <div class="product">
 
@@ -182,8 +179,11 @@ Comprar
 
 <div class="popup-content">
 
-<span class="cerrar" onclick="cerrarCreditos()">
+<span class="cerrar"
+onclick="cerrarCreditos()">
+
 ×
+
 </span>
 
 <h2>RECARGAR</h2>
@@ -204,8 +204,6 @@ Continuar
 
 <div id="metodosPago" style="display:none;">
 
-<!-- CAMBIAR DATOS -->
-
 <button onclick="mostrarPago('NEQUI','3001234567')">
 NEQUI
 </button>
@@ -215,8 +213,6 @@ PAYPAL
 </button>
 
 <br><br>
-
-<!-- CAMBIAR WHATSAPP -->
 
 <a
 href="https://wa.me/573001234567"
@@ -240,8 +236,11 @@ ENVIAR COMPROBANTE
 
 <div class="popup-content">
 
-<span class="cerrar" onclick="cerrarPago()">
+<span class="cerrar"
+onclick="cerrarPago()">
+
 ×
+
 </span>
 
 <h2 id="tituloPago"></h2>
@@ -287,6 +286,36 @@ onclick="cerrarDuraciones()">
 
 </div>
 
+<!-- POPUP KEY -->
+
+<div id="popupKey" class="popup">
+
+<div class="popup-content">
+
+<h2>
+COMPRA EXITOSA
+</h2>
+
+<p>
+Tu key:
+</p>
+
+<h3 id="keyGenerada"></h3>
+
+<button onclick="copiarKey()">
+COPIAR KEY
+</button>
+
+<br><br>
+
+<button onclick="cerrarKey()">
+CERRAR
+</button>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import { initializeApp }
@@ -310,8 +339,6 @@ collection,
 addDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// FIREBASE REAL
 
 const firebaseConfig = {
 
@@ -346,8 +373,6 @@ getAuth(app);
 const db =
 getFirestore(app);
 
-// GENERAR KEY
-
 function generarKey(){
 
 const chars =
@@ -381,8 +406,6 @@ return key;
 
 }
 
-// FECHA
-
 function calcularExpiracion(dias){
 
 const fecha = new Date();
@@ -394,8 +417,6 @@ fecha.getDate()+dias
 return fecha.toISOString();
 
 }
-
-// LOGIN / REGISTRO
 
 window.login = async function(){
 
@@ -435,29 +456,23 @@ document.getElementById(
 
 }
 
-// SESION
-
 onAuthStateChanged(
 auth,
 async(user)=>{
 
 if(user){
 
-document.getElementById(
-"loginBox"
-).style.display = "none";
+loginBox.style.display =
+"none";
 
-document.getElementById(
-"panel"
-).style.display = "block";
+panel.style.display =
+"block";
 
 const userRef =
 doc(db,"users",user.uid);
 
 const userSnap =
 await getDoc(userRef);
-
-// CREAR USER
 
 if(!userSnap.exists()){
 
@@ -473,58 +488,43 @@ creditos:0
 
 }
 
-// LEER DATOS
-
 const nuevoSnap =
 await getDoc(userRef);
 
 const datos =
 nuevoSnap.data();
 
-document.getElementById(
-"creditos"
-).innerHTML =
-
+creditos.innerHTML =
 datos.creditos || 0;
 
 }
 
 });
 
-// CREDITOS
-
 window.abrirCreditos = function(){
 
-document.getElementById(
-"popupCreditos"
-).style.display = "flex";
+popupCreditos.style.display =
+"flex";
 
 }
 
 window.cerrarCreditos = function(){
 
-document.getElementById(
-"popupCreditos"
-).style.display = "none";
+popupCreditos.style.display =
+"none";
 
 }
-
-// PRECIO
 
 window.calcularPrecio = function(){
 
 let c =
 parseInt(
-document.getElementById(
-"cantidadCreditos"
-).value
+cantidadCreditos.value
 )||0;
 
 let total = c * 50;
 
-document.getElementById(
-"precioFinal"
-).innerHTML =
+precioFinal.innerHTML =
 
 "Total: $" +
 
@@ -534,71 +534,55 @@ total.toLocaleString() +
 
 }
 
-// METODOS
-
 window.mostrarMetodos = function(){
 
-document.getElementById(
-"metodosPago"
-).style.display = "block";
+metodosPago.style.display =
+"block";
 
 }
-
-// PAGO
 
 window.mostrarPago = function(
 titulo,
 info
 ){
 
-document.getElementById(
-"popupPago"
-).style.display = "flex";
+popupPago.style.display =
+"flex";
 
-document.getElementById(
-"tituloPago"
-).innerHTML = titulo;
+tituloPago.innerHTML =
+titulo;
 
-document.getElementById(
-"infoPago"
-).innerHTML = info;
+infoPago.innerHTML =
+info;
 
 }
 
 window.cerrarPago = function(){
 
-document.getElementById(
-"popupPago"
-).style.display = "none";
+popupPago.style.display =
+"none";
 
 }
-
-// DURACIONES
 
 window.abrirDuraciones = function(
 prod
 ){
 
-document.getElementById(
-"popupDuraciones"
-).style.display = "flex";
+popupDuraciones.style.display =
+"flex";
 
-document.getElementById(
-"tituloDuracion"
-).innerHTML = prod;
+tituloDuracion.innerHTML =
+prod;
 
 }
 
 window.cerrarDuraciones =
 function(){
 
-document.getElementById(
-"popupDuraciones"
-).style.display = "none";
+popupDuraciones.style.display =
+"none";
 
 }
-
-// COMPRAR
 
 window.seleccionarDuracion =
 async function(
@@ -613,9 +597,7 @@ if(!user)return;
 
 let creditosActuales =
 parseInt(
-document.getElementById(
-"creditos"
-).innerHTML
+creditos.innerHTML
 );
 
 if(creditosActuales < precio){
@@ -648,16 +630,12 @@ calcularExpiracion(dias);
 const userRef =
 doc(db,"users",user.uid);
 
-// DESCONTAR CREDITOS
-
 await updateDoc(userRef,{
 
 creditos:
 creditosActuales - precio
 
 });
-
-// GUARDAR KEY
 
 await addDoc(
 collection(db,"keys"),
@@ -666,9 +644,7 @@ collection(db,"keys"),
 key:nuevaKey,
 
 producto:
-document.getElementById(
-"tituloDuracion"
-).innerHTML,
+tituloDuracion.innerHTML,
 
 duracion:duracion,
 
@@ -688,25 +664,37 @@ navigator.userAgent
 
 });
 
-// ACTUALIZAR CREDITOS
-
-document.getElementById(
-"creditos"
-).innerHTML =
+creditos.innerHTML =
 
 creditosActuales - precio;
 
-// MOSTRAR KEY
+popupKey.style.display =
+"flex";
 
-alert(
-
-"COMPRA EXITOSA\n\nKEY:\n\n" +
-
-nuevaKey
-
-);
+keyGenerada.innerHTML =
+nuevaKey;
 
 cerrarDuraciones();
+
+}
+
+window.cerrarKey = function(){
+
+popupKey.style.display =
+"none";
+
+}
+
+window.copiarKey = function(){
+
+const texto =
+keyGenerada.innerText;
+
+navigator.clipboard.writeText(
+texto
+);
+
+alert("KEY COPIADA");
 
 }
 
