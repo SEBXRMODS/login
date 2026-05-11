@@ -137,6 +137,8 @@ Recargar Créditos
 
 <div class="grid">
 
+<!-- PRODUCTO 1 -->
+
 <div class="product">
 
 <!-- CAMBIAR IMAGEN -->
@@ -153,6 +155,8 @@ Comprar
 </button>
 
 </div>
+
+<!-- PRODUCTO 2 -->
 
 <div class="product">
 
@@ -175,15 +179,24 @@ Comprar
 <!-- POPUP CREDITOS -->
 
 <div id="popupCreditos" class="popup">
+
 <div class="popup-content">
 
-<span class="cerrar" onclick="cerrarCreditos()">×</span>
+<span class="cerrar" onclick="cerrarCreditos()">
+×
+</span>
 
 <h2>RECARGAR</h2>
 
-<input type="number" id="cantidadCreditos" placeholder="Cantidad créditos" oninput="calcularPrecio()">
+<input
+type="number"
+id="cantidadCreditos"
+placeholder="Cantidad créditos"
+oninput="calcularPrecio()">
 
-<p id="precioFinal">Total: $0 COP</p>
+<p id="precioFinal">
+Total: $0 COP
+</p>
 
 <button onclick="mostrarMetodos()">
 Continuar
@@ -205,7 +218,9 @@ PAYPAL
 
 <!-- CAMBIAR WHATSAPP -->
 
-<a href="https://wa.me/573001234567" target="_blank">
+<a
+href="https://wa.me/573001234567"
+target="_blank">
 
 <button>
 ENVIAR COMPROBANTE
@@ -216,28 +231,39 @@ ENVIAR COMPROBANTE
 </div>
 
 </div>
+
 </div>
 
-<!-- POPUP PAGOS -->
+<!-- POPUP PAGO -->
 
 <div id="popupPago" class="popup">
+
 <div class="popup-content">
 
-<span class="cerrar" onclick="cerrarPago()">×</span>
+<span class="cerrar" onclick="cerrarPago()">
+×
+</span>
 
 <h2 id="tituloPago"></h2>
 
 <p id="infoPago"></p>
 
 </div>
+
 </div>
 
 <!-- POPUP DURACIONES -->
 
 <div id="popupDuraciones" class="popup">
+
 <div class="popup-content">
 
-<span class="cerrar" onclick="cerrarDuraciones()">×</span>
+<span class="cerrar"
+onclick="cerrarDuraciones()">
+
+×
+
+</span>
 
 <h2 id="tituloDuracion"></h2>
 
@@ -258,18 +284,21 @@ ENVIAR COMPROBANTE
 </button>
 
 </div>
+
 </div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getAuth,
 signInWithEmailAndPassword,
 createUserWithEmailAndPassword,
 onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
 getFirestore,
@@ -279,33 +308,45 @@ setDoc,
 updateDoc,
 collection,
 addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// FIREBASE
+// FIREBASE REAL
 
 const firebaseConfig = {
 
-apiKey: "TU_API_KEY",
+apiKey: "AIzaSyBtbovWtH-fnSA2KqbobIFjtbNtcicsi-k",
 
-authDomain: "TU_AUTH_DOMAIN",
+authDomain:
+"pagina-de-productos-680db.firebaseapp.com",
 
-projectId: "TU_PROJECT_ID",
+projectId:
+"pagina-de-productos-680db",
 
-storageBucket: "TU_STORAGE_BUCKET",
+storageBucket:
+"pagina-de-productos-680db.firebasestorage.app",
 
-messagingSenderId: "TU_SENDER_ID",
+messagingSenderId:
+"393545047716",
 
-appId: "TU_APP_ID"
+appId:
+"1:393545047716:web:07fb512bc7ee970bdbd031",
+
+measurementId:
+"G-EZBWVZDK5E"
 
 };
 
-const app = initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+getAuth(app);
 
-const db = getFirestore(app);
+const db =
+getFirestore(app);
 
-// GENERADOR KEYS
+// GENERAR KEY
 
 function generarKey(){
 
@@ -317,7 +358,9 @@ let key = "SEBXR-";
 for(let i=0;i<4;i++){
 
 key += chars.charAt(
-Math.floor(Math.random()*chars.length)
+Math.floor(
+Math.random()*chars.length
+)
 );
 
 }
@@ -327,7 +370,9 @@ key += "-";
 for(let i=0;i<4;i++){
 
 key += chars.charAt(
-Math.floor(Math.random()*chars.length)
+Math.floor(
+Math.random()*chars.length
+)
 );
 
 }
@@ -336,7 +381,7 @@ return key;
 
 }
 
-// EXPIRACION
+// FECHA
 
 function calcularExpiracion(dias){
 
@@ -392,19 +437,27 @@ document.getElementById(
 
 // SESION
 
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(
+auth,
+async(user)=>{
 
 if(user){
 
-loginBox.style.display = "none";
+document.getElementById(
+"loginBox"
+).style.display = "none";
 
-panel.style.display = "block";
+document.getElementById(
+"panel"
+).style.display = "block";
 
 const userRef =
 doc(db,"users",user.uid);
 
 const userSnap =
 await getDoc(userRef);
+
+// CREAR USER
 
 if(!userSnap.exists()){
 
@@ -420,13 +473,18 @@ creditos:0
 
 }
 
+// LEER DATOS
+
 const nuevoSnap =
 await getDoc(userRef);
 
 const datos =
 nuevoSnap.data();
 
-creditos.innerHTML =
+document.getElementById(
+"creditos"
+).innerHTML =
+
 datos.creditos || 0;
 
 }
@@ -437,15 +495,17 @@ datos.creditos || 0;
 
 window.abrirCreditos = function(){
 
-popupCreditos.style.display =
-"flex";
+document.getElementById(
+"popupCreditos"
+).style.display = "flex";
 
 }
 
 window.cerrarCreditos = function(){
 
-popupCreditos.style.display =
-"none";
+document.getElementById(
+"popupCreditos"
+).style.display = "none";
 
 }
 
@@ -455,12 +515,16 @@ window.calcularPrecio = function(){
 
 let c =
 parseInt(
-cantidadCreditos.value
+document.getElementById(
+"cantidadCreditos"
+).value
 )||0;
 
 let total = c * 50;
 
-precioFinal.innerHTML =
+document.getElementById(
+"precioFinal"
+).innerHTML =
 
 "Total: $" +
 
@@ -474,8 +538,9 @@ total.toLocaleString() +
 
 window.mostrarMetodos = function(){
 
-metodosPago.style.display =
-"block";
+document.getElementById(
+"metodosPago"
+).style.display = "block";
 
 }
 
@@ -486,21 +551,25 @@ titulo,
 info
 ){
 
-popupPago.style.display =
-"flex";
+document.getElementById(
+"popupPago"
+).style.display = "flex";
 
-tituloPago.innerHTML =
-titulo;
+document.getElementById(
+"tituloPago"
+).innerHTML = titulo;
 
-infoPago.innerHTML =
-info;
+document.getElementById(
+"infoPago"
+).innerHTML = info;
 
 }
 
 window.cerrarPago = function(){
 
-popupPago.style.display =
-"none";
+document.getElementById(
+"popupPago"
+).style.display = "none";
 
 }
 
@@ -510,19 +579,22 @@ window.abrirDuraciones = function(
 prod
 ){
 
-popupDuraciones.style.display =
-"flex";
+document.getElementById(
+"popupDuraciones"
+).style.display = "flex";
 
-tituloDuracion.innerHTML =
-prod;
+document.getElementById(
+"tituloDuracion"
+).innerHTML = prod;
 
 }
 
 window.cerrarDuraciones =
 function(){
 
-popupDuraciones.style.display =
-"none";
+document.getElementById(
+"popupDuraciones"
+).style.display = "none";
 
 }
 
@@ -541,7 +613,9 @@ if(!user)return;
 
 let creditosActuales =
 parseInt(
-creditos.innerHTML
+document.getElementById(
+"creditos"
+).innerHTML
 );
 
 if(creditosActuales < precio){
@@ -574,12 +648,16 @@ calcularExpiracion(dias);
 const userRef =
 doc(db,"users",user.uid);
 
+// DESCONTAR CREDITOS
+
 await updateDoc(userRef,{
 
 creditos:
 creditosActuales - precio
 
 });
+
+// GUARDAR KEY
 
 await addDoc(
 collection(db,"keys"),
@@ -588,7 +666,9 @@ collection(db,"keys"),
 key:nuevaKey,
 
 producto:
-tituloDuracion.innerHTML,
+document.getElementById(
+"tituloDuracion"
+).innerHTML,
 
 duracion:duracion,
 
@@ -608,13 +688,19 @@ navigator.userAgent
 
 });
 
-creditos.innerHTML =
+// ACTUALIZAR CREDITOS
+
+document.getElementById(
+"creditos"
+).innerHTML =
 
 creditosActuales - precio;
 
+// MOSTRAR KEY
+
 alert(
 
-"COMPRA EXITOSA\n\nKEY:\n" +
+"COMPRA EXITOSA\n\nKEY:\n\n" +
 
 nuevaKey
 
@@ -625,5 +711,6 @@ cerrarDuraciones();
 }
 
 </script>
+
 </body>
 </html>
