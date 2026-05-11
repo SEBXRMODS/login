@@ -102,7 +102,7 @@ color:#00ff88;
 </head>
 <body>
 
-<!-- LOGIN / REGISTER -->
+<!-- LOGIN -->
 
 <div id="loginBox" class="card">
 
@@ -136,7 +136,9 @@ REGISTRARSE
 
 <div id="panel" style="display:none;">
 
-<h1>TIENDA SEBXR MODS</h1>
+<h1>
+TIENDA SEBXR MODS
+</h1>
 
 <div class="card">
 
@@ -151,11 +153,49 @@ Recargar Créditos
 
 </div>
 
-<div class="grid">
+<!-- ========================= -->
+<!-- MIS KEYS -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>
+🔑 Mis Keys
+</h2>
+
+<div id="misKeys">
+
+<p>
+No tienes keys
+</p>
+
+</div>
+
+</div>
 
 <!-- ========================= -->
-<!-- PRODUCTO 1 -->
+<!-- HISTORIAL -->
 <!-- ========================= -->
+
+<div class="card">
+
+<h2>
+🧾 Historial
+</h2>
+
+<div id="historialCompras">
+
+<p>
+Sin compras
+</p>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<!-- PRODUCTO 1 -->
 
 <div class="product">
 
@@ -187,9 +227,7 @@ Características
 
 </div>
 
-<!-- ========================= -->
 <!-- PRODUCTO 2 -->
-<!-- ========================= -->
 
 <div class="product">
 
@@ -215,9 +253,7 @@ Características
 
 </div>
 
-<!-- ========================= -->
 <!-- PRODUCTO 3 -->
-<!-- ========================= -->
 
 <div class="product">
 
@@ -435,11 +471,12 @@ getDoc,
 setDoc,
 updateDoc,
 collection,
-addDoc
+addDoc,
+query,
+where,
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// FIREBASE
 
 const firebaseConfig = {
 
@@ -514,9 +551,7 @@ return key;
 window.login = async function(){
 
 const email =
-document.getElementById(
-"email"
-).value;
+email.value;
 
 const password =
 document.getElementById(
@@ -533,9 +568,7 @@ password
 
 }catch(err){
 
-document.getElementById(
-"error"
-).innerHTML =
+error.innerHTML =
 err.message;
 
 }
@@ -577,13 +610,13 @@ creditos:0
 
 });
 
-alert("CUENTA CREADA");
+alert(
+"CUENTA CREADA"
+);
 
 }catch(err){
 
-document.getElementById(
-"error"
-).innerHTML =
+error.innerHTML =
 err.message;
 
 }
@@ -633,6 +666,143 @@ nuevoSnap.data();
 creditos.innerHTML =
 datos.creditos || 0;
 
+// CARGAR KEYS
+
+const keysQuery =
+query(
+collection(db,"keys"),
+where("uid","==",user.uid)
+);
+
+const keysSnap =
+await getDocs(keysQuery);
+
+let htmlKeys = "";
+
+keysSnap.forEach((docu)=>{
+
+const data =
+docu.data();
+
+const ahora =
+new Date();
+
+const expira =
+new Date(data.expira);
+
+let restante =
+expira - ahora;
+
+if(restante <= 0){
+
+data.estado =
+"vencida";
+
+}
+
+let dias =
+Math.floor(
+restante / (1000*60*60*24)
+);
+
+if(dias < 0){
+
+dias = 0;
+
+}
+
+htmlKeys += `
+
+<div class="product">
+
+<h3>${data.producto}</h3>
+
+<p>
+🔑 ${data.key}
+</p>
+
+<p>
+📱 ${data.dispositivo}
+</p>
+
+<p>
+📌 Estado:
+${data.estado}
+</p>
+
+<p>
+⏳ ${dias} días restantes
+</p>
+
+</div>
+
+`;
+
+});
+
+if(htmlKeys == ""){
+
+htmlKeys =
+"<p>No tienes keys</p>";
+
+}
+
+misKeys.innerHTML =
+htmlKeys;
+
+// HISTORIAL
+
+const comprasQuery =
+query(
+collection(db,"purchases"),
+where("uid","==",user.uid)
+);
+
+const comprasSnap =
+await getDocs(comprasQuery);
+
+let htmlCompras = "";
+
+comprasSnap.forEach((docu)=>{
+
+const data =
+docu.data();
+
+htmlCompras += `
+
+<div class="product">
+
+<h3>${data.producto}</h3>
+
+<p>
+📅 ${data.fecha}
+</p>
+
+<p>
+💰 ${data.creditos}
+ créditos
+</p>
+
+<p>
+⏳ ${data.duracion}
+</p>
+
+</div>
+
+`;
+
+});
+
+if(htmlCompras == ""){
+
+htmlCompras =
+"<p>Sin compras</p>";
+
+}
+
+historialCompras.innerHTML =
+htmlCompras;
+
 }
 
 });
@@ -663,7 +833,8 @@ parseInt(
 cantidadCreditos.value
 )||0;
 
-let total = c * 50;
+let total =
+c * 50;
 
 precioFinal.innerHTML =
 
@@ -786,11 +957,38 @@ uid:user.uid,
 
 email:user.email,
 
-creada:new Date()
-.toISOString(),
+creada:
+new Date().toISOString(),
+
+expira:
+new Date(
+Date.now() +
+(1000*60*60*24*30)
+).toISOString(),
 
 dispositivo:
 navigator.userAgent
+
+});
+
+// HISTORIAL
+
+await addDoc(
+collection(db,"purchases"),
+{
+
+uid:user.uid,
+
+producto:
+tituloDuracion.innerHTML,
+
+duracion:duracion,
+
+creditos:precio,
+
+fecha:
+new Date()
+.toLocaleString()
 
 });
 
@@ -821,14 +1019,13 @@ popupKey.style.display =
 window.copiarKey =
 function(){
 
-const texto =
-keyGenerada.innerText;
-
 navigator.clipboard.writeText(
-texto
+keyGenerada.innerText
 );
 
-alert("KEY COPIADA");
+alert(
+"KEY COPIADA"
+);
 
 }
 
@@ -840,9 +1037,8 @@ function(texto){
 popupCaracteristicas.style.display =
 "flex";
 
-document.getElementById(
-"contenidoCaracteristicas"
-).innerHTML = texto;
+contenidoCaracteristicas.innerHTML =
+texto;
 
 }
 
