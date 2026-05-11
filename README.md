@@ -87,8 +87,6 @@ font-size:20px;
 margin-bottom:20px;
 }
 
-/* POPUPS */
-
 .popup{
 display:none;
 position:fixed;
@@ -110,6 +108,8 @@ border-radius:15px;
 width:320px;
 text-align:center;
 box-shadow:0 0 20px #00ff88;
+max-height:90vh;
+overflow:auto;
 }
 
 .cerrar{
@@ -177,36 +177,57 @@ Entrar
 
 <div class="grid">
 
-<!-- PRODUCTO -->
+<!-- ======================================= -->
+<!-- PRODUCTO 1 -->
+<!-- ======================================= -->
 
 <div class="product">
 
+<!-- AQUI CAMBIAS LA IMAGEN -->
+
 <img src="https://i.imgur.com/0rVeh4A.png">
 
-<h2>Spotify Premium</h2>
+<!-- AQUI CAMBIAS EL NOMBRE -->
+
+<h2>Panel Sebxr Mods</h2>
+
+<!-- AQUI CAMBIAS LA DESCRIPCION -->
 
 <p>
-Cuenta premium 1 mes
+panel sin black/ban
 </p>
 
+<!-- PRECIO -->
+
 <div class="price">
-100 créditos
+Desde 20 créditos
 </div>
 
-<button onclick="comprar(100)">
+<!-- BOTON COMPRAR -->
+
+<button onclick="abrirDuraciones(
+'Panel Sebxr Mods'
+)">
 Comprar
 </button>
 
+<!-- CARACTERISTICAS -->
+
 <button onclick="verCaracteristicas(
-'Spotify Premium',
-'• 1 mes\n• Premium\n• Sin anuncios\n• Calidad alta'
+
+'Panel Sebxr Mods',
+
+'• panel sin ban ni black\n• cuenta principal\n• login google\n• aimbot\n• regedit\n• speed\n• aim assist'
+
 )">
 Características
 </button>
 
 </div>
 
-<!-- PRODUCTO -->
+<!-- ======================================= -->
+<!-- PRODUCTO 2 -->
+<!-- ======================================= -->
 
 <div class="product">
 
@@ -219,16 +240,21 @@ Cuenta UHD 1 mes
 </p>
 
 <div class="price">
-150 créditos
+Desde 30 créditos
 </div>
 
-<button onclick="comprar(150)">
+<button onclick="abrirDuraciones(
+'Netflix UHD'
+)">
 Comprar
 </button>
 
 <button onclick="verCaracteristicas(
+
 'Netflix UHD',
+
 '• UHD 4K\n• Perfil privado\n• 1 mes'
+
 )">
 Características
 </button>
@@ -278,6 +304,8 @@ RECARGAR
 
 <h3>Métodos de pago</h3>
 
+<!-- AQUI CAMBIAS TUS DATOS -->
+
 <button onclick="mostrarPago(
 'NEQUI',
 'Número: 3001234567'
@@ -300,6 +328,8 @@ BINANCE
 </button>
 
 <br><br>
+
+<!-- AQUI CAMBIAS TU WHATSAPP -->
 
 <a
 href="https://wa.me/573001234567"
@@ -361,6 +391,65 @@ onclick="cerrarCaracteristicas()">
 
 </div>
 
+<!-- POPUP DURACIONES -->
+
+<div id="popupDuraciones" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar"
+onclick="cerrarDuraciones()">
+
+×
+
+</span>
+
+<h2 id="tituloDuracion"></h2>
+
+<p>
+Selecciona duración
+</p>
+
+<button onclick="seleccionarDuracion('1 Día',20)">
+1 Día - 20 créditos
+</button>
+
+<button onclick="seleccionarDuracion('2 Días',30)">
+2 Días - 30 créditos
+</button>
+
+<button onclick="seleccionarDuracion('3 Días',40)">
+3 Días - 40 créditos
+</button>
+
+<button onclick="seleccionarDuracion('4 Días',50)">
+4 Días - 50 créditos
+</button>
+
+<button onclick="seleccionarDuracion('5 Días',60)">
+5 Días - 60 créditos
+</button>
+
+<button onclick="seleccionarDuracion('6 Días',70)">
+6 Días - 70 créditos
+</button>
+
+<button onclick="seleccionarDuracion('7 Días',80)">
+7 Días - 80 créditos
+</button>
+
+<button onclick="seleccionarDuracion('1 Mes',150)">
+1 Mes - 150 créditos
+</button>
+
+<button onclick="seleccionarDuracion('1 Año',1000)">
+1 Año - 1000 créditos
+</button>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -377,14 +466,25 @@ doc,
 getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// =======================================
+// NUEVO FIREBASE
+// =======================================
+
 const firebaseConfig = {
 
-apiKey: "AIzaSyC8cF8i86iqxCUIlOw1ykd_Civxl1qX2FM",
-authDomain: "osting-1b3f6.firebaseapp.com",
-projectId: "osting-1b3f6",
-storageBucket: "osting-1b3f6.firebasestorage.app",
-messagingSenderId: "1080144262727",
-appId: "1:1080144262727:web:3f42a97c334adb826b2362"
+apiKey: "AIzaSyBtbovWtH-fnSA2KqbobIFjtbNtcicsi-k",
+
+authDomain: "pagina-de-productos-680db.firebaseapp.com",
+
+projectId: "pagina-de-productos-680db",
+
+storageBucket: "pagina-de-productos-680db.firebasestorage.app",
+
+messagingSenderId: "393545047716",
+
+appId: "1:393545047716:web:07fb512bc7ee970bdbd031",
+
+measurementId: "G-EZBWVZDK5E"
 
 };
 
@@ -393,6 +493,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+
+// LOGIN
 
 window.login = async function(){
 
@@ -419,9 +521,13 @@ document.getElementById("error").innerHTML =
 
 }
 
+// SESION
+
 onAuthStateChanged(auth, async(user)=>{
 
 if(user){
+
+console.log(user.uid);
 
 document.getElementById("loginBox").style.display =
 "none";
@@ -449,6 +555,8 @@ datos.creditos || 0;
 
 });
 
+// ABRIR CREDITOS
+
 window.abrirCreditos = function(){
 
 document.getElementById("popupCreditos")
@@ -461,12 +569,16 @@ document.getElementById("creditos")
 
 }
 
+// CERRAR CREDITOS
+
 window.cerrarCreditos = function(){
 
 document.getElementById("popupCreditos")
 .style.display = "none";
 
 }
+
+// CALCULAR PRECIO
 
 window.calcularPrecio = function(){
 
@@ -492,6 +604,8 @@ total.toLocaleString() +
 
 }
 
+// MOSTRAR METODOS
+
 window.mostrarMetodos = function(){
 
 document.getElementById("metodosPago")
@@ -499,25 +613,7 @@ document.getElementById("metodosPago")
 
 }
 
-window.comprar = function(precio){
-
-let creditos =
-parseInt(
-document.getElementById("creditos")
-.innerHTML
-);
-
-if(creditos < precio){
-
-abrirCreditos();
-
-return;
-
-}
-
-alert("Compra realizada");
-
-}
+// CARACTERISTICAS
 
 window.verCaracteristicas = function(
 titulo,
@@ -547,6 +643,8 @@ document.getElementById(
 
 }
 
+// PAGOS
+
 window.mostrarPago = function(titulo,info){
 
 document.getElementById("popupPago")
@@ -564,6 +662,100 @@ window.cerrarPago = function(){
 
 document.getElementById("popupPago")
 .style.display = "none";
+
+}
+
+// ABRIR DURACIONES
+
+window.abrirDuraciones = function(prod){
+
+document.getElementById(
+"popupDuraciones"
+).style.display = "flex";
+
+document.getElementById(
+"tituloDuracion"
+).innerHTML = prod;
+
+}
+
+// CERRAR DURACIONES
+
+window.cerrarDuraciones = function(){
+
+document.getElementById(
+"popupDuraciones"
+).style.display = "none";
+
+}
+
+// SELECCIONAR DURACION
+
+window.seleccionarDuracion = function(
+duracion,
+precio
+){
+
+let creditos =
+parseInt(
+document.getElementById(
+"creditos"
+).innerHTML
+);
+
+// SI NO TIENE CREDITOS
+
+if(creditos < precio){
+
+// CERRAR DURACIONES
+
+document.getElementById(
+"popupDuraciones"
+).style.display = "none";
+
+// ABRIR CREDITOS
+
+abrirCreditos();
+
+// PONER CREDITOS NECESARIOS
+
+document.getElementById(
+"cantidadCreditos"
+).value = precio;
+
+// CALCULAR PRECIO
+
+calcularPrecio();
+
+// MOSTRAR METODOS
+
+document.getElementById(
+"metodosPago"
+).style.display = "block";
+
+return;
+
+}
+
+// SI TIENE CREDITOS
+
+alert(
+
+"Compraste:\n\n" +
+
+duracion +
+
+"\n\nPor " +
+
+precio +
+
+" créditos"
+
+);
+
+// CERRAR DURACIONES
+
+cerrarDuraciones();
 
 }
 
