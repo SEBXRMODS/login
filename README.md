@@ -1,7 +1,3 @@
-<!-- ========================= -->
-<!-- index.html -->
-<!-- ========================= -->
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -106,21 +102,37 @@ color:#00ff88;
 </head>
 <body>
 
+<!-- LOGIN / REGISTER -->
+
 <div id="loginBox" class="card">
 
-<h1>LOGIN / REGISTRO</h1>
+<h1>
+LOGIN / REGISTRO
+</h1>
 
-<input type="email" id="email" placeholder="Correo">
+<input
+type="email"
+id="email"
+placeholder="Correo">
 
-<input type="password" id="password" placeholder="Contraseña">
+<input
+type="password"
+id="password"
+placeholder="Contraseña">
 
 <button onclick="login()">
-Entrar o Registrarse
+INICIAR SESIÓN
+</button>
+
+<button onclick="register()">
+REGISTRARSE
 </button>
 
 <p id="error"></p>
 
 </div>
+
+<!-- PANEL -->
 
 <div id="panel" style="display:none;">
 
@@ -141,30 +153,92 @@ Recargar Créditos
 
 <div class="grid">
 
+<!-- ========================= -->
+<!-- PRODUCTO 1 -->
+<!-- ========================= -->
+
 <div class="product">
 
-"<img src="https://yt3.googleusercontent.com/pAJ7h-NCLwPkeqvO6qZu4_prNDaVGKgocR41XnCv0rCXzw_iJ7qX7rMkOnMVpGAVSEU9XDdKzns=s160-c-k-c0x00ffffff-no-rj">
+<!-- CAMBIAR IMAGEN -->
 
-<h2>Panel Sebxr Mods</h2>
+<img src="https://yt3.googleusercontent.com/pAJ7h-NCLwPkeqvO6qZu4_prNDaVGKgocR41XnCv0rCXzw_iJ7qX7rMkOnMVpGAVSEU9XDdKzns=s160-c-k-c0x00ffffff-no-rj">
 
-<p>Panel premium sin blacklist</p>
+<!-- CAMBIAR NOMBRE -->
+
+<h2>
+Panel Sebxr Mods
+</h2>
+
+<!-- CAMBIAR DESCRIPCION -->
+
+<p>
+Panel premium sin blacklist
+</p>
 
 <button onclick="abrirDuraciones('Panel Sebxr Mods')">
 Comprar
 </button>
 
+<button onclick="mostrarCaracteristicas(
+'✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Keys automáticas<br><br>✔ Soporte incluido'
+)">
+Características
+</button>
+
 </div>
+
+<!-- ========================= -->
+<!-- PRODUCTO 2 -->
+<!-- ========================= -->
 
 <div class="product">
 
 <img src="https://i.imgur.com/u6dF9V7.png">
 
-<h2>Netflix UHD</h2>
+<h2>
+Aimbot disimulado
+</h2>
 
-<p>Cuenta UHD privada</p>
+<p>
+Aimbot premium estable
+</p>
 
-<button onclick="abrirDuraciones('Netflix UHD')">
+<button onclick="abrirDuraciones('Aimbot disimulado')">
 Comprar
+</button>
+
+<button onclick="mostrarCaracteristicas(
+'✔ Aim suave<br><br>✔ Anti ban<br><br>✔ Estable<br><br>✔ Actualizaciones'
+)">
+Características
+</button>
+
+</div>
+
+<!-- ========================= -->
+<!-- PRODUCTO 3 -->
+<!-- ========================= -->
+
+<div class="product">
+
+<img src="https://i.imgur.com/fdKQxYh.png">
+
+<h2>
+Spotify Premium
+</h2>
+
+<p>
+Spotify sin anuncios premium
+</p>
+
+<button onclick="abrirDuraciones('Spotify Premium')">
+Comprar
+</button>
+
+<button onclick="mostrarCaracteristicas(
+'✔ Sin anuncios<br><br>✔ Calidad alta<br><br>✔ Premium estable<br><br>✔ Garantía incluida'
+)">
+Características
 </button>
 
 </div>
@@ -186,7 +260,9 @@ onclick="cerrarCreditos()">
 
 </span>
 
-<h2>RECARGAR</h2>
+<h2>
+RECARGAR
+</h2>
 
 <input
 type="number"
@@ -316,6 +392,29 @@ CERRAR
 
 </div>
 
+<!-- POPUP CARACTERISTICAS -->
+
+<div id="popupCaracteristicas" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar"
+onclick="cerrarCaracteristicas()">
+
+×
+
+</span>
+
+<h2>
+CARACTERÍSTICAS
+</h2>
+
+<p id="contenidoCaracteristicas"></p>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import { initializeApp }
@@ -339,6 +438,8 @@ collection,
 addDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// FIREBASE
 
 const firebaseConfig = {
 
@@ -373,6 +474,8 @@ getAuth(app);
 const db =
 getFirestore(app);
 
+// GENERAR KEY
+
 function generarKey(){
 
 const chars =
@@ -406,25 +509,19 @@ return key;
 
 }
 
-function calcularExpiracion(dias){
-
-const fecha = new Date();
-
-fecha.setDate(
-fecha.getDate()+dias
-);
-
-return fecha.toISOString();
-
-}
+// LOGIN
 
 window.login = async function(){
 
 const email =
-document.getElementById("email").value;
+document.getElementById(
+"email"
+).value;
 
 const password =
-document.getElementById("password").value;
+document.getElementById(
+"password"
+).value;
 
 try{
 
@@ -436,25 +533,64 @@ password
 
 }catch(err){
 
+document.getElementById(
+"error"
+).innerHTML =
+err.message;
+
+}
+
+}
+
+// REGISTER
+
+window.register = async function(){
+
+const email =
+document.getElementById(
+"email"
+).value;
+
+const password =
+document.getElementById(
+"password"
+).value;
+
 try{
 
+const cred =
 await createUserWithEmailAndPassword(
 auth,
 email,
 password
 );
 
-}catch(error){
+await setDoc(
+doc(db,"users",cred.user.uid),
+{
+
+email:email,
+
+uid:cred.user.uid,
+
+creditos:0
+
+});
+
+alert("CUENTA CREADA");
+
+}catch(err){
 
 document.getElementById(
 "error"
-).innerHTML = error.message;
+).innerHTML =
+err.message;
 
 }
 
 }
 
-}
+// USER
 
 onAuthStateChanged(
 auth,
@@ -501,21 +637,26 @@ datos.creditos || 0;
 
 });
 
-window.abrirCreditos = function(){
+// CREDITOS
+
+window.abrirCreditos =
+function(){
 
 popupCreditos.style.display =
 "flex";
 
 }
 
-window.cerrarCreditos = function(){
+window.cerrarCreditos =
+function(){
 
 popupCreditos.style.display =
 "none";
 
 }
 
-window.calcularPrecio = function(){
+window.calcularPrecio =
+function(){
 
 let c =
 parseInt(
@@ -534,17 +675,18 @@ total.toLocaleString() +
 
 }
 
-window.mostrarMetodos = function(){
+window.mostrarMetodos =
+function(){
 
 metodosPago.style.display =
 "block";
 
 }
 
-window.mostrarPago = function(
-titulo,
-info
-){
+// PAGOS
+
+window.mostrarPago =
+function(titulo,info){
 
 popupPago.style.display =
 "flex";
@@ -557,16 +699,18 @@ info;
 
 }
 
-window.cerrarPago = function(){
+window.cerrarPago =
+function(){
 
 popupPago.style.display =
 "none";
 
 }
 
-window.abrirDuraciones = function(
-prod
-){
+// DURACIONES
+
+window.abrirDuraciones =
+function(prod){
 
 popupDuraciones.style.display =
 "flex";
@@ -583,6 +727,8 @@ popupDuraciones.style.display =
 "none";
 
 }
+
+// COMPRAR
 
 window.seleccionarDuracion =
 async function(
@@ -610,22 +756,8 @@ return;
 
 }
 
-let dias = 1;
-
-if(duracion === "7 Días")
-dias = 7;
-
-if(duracion === "1 Mes")
-dias = 30;
-
-if(duracion === "1 Año")
-dias = 365;
-
 const nuevaKey =
 generarKey();
-
-const expiracion =
-calcularExpiracion(dias);
 
 const userRef =
 doc(db,"users",user.uid);
@@ -647,8 +779,6 @@ producto:
 tituloDuracion.innerHTML,
 
 duracion:duracion,
-
-expira:expiracion,
 
 estado:"activa",
 
@@ -678,14 +808,18 @@ cerrarDuraciones();
 
 }
 
-window.cerrarKey = function(){
+// KEY
+
+window.cerrarKey =
+function(){
 
 popupKey.style.display =
 "none";
 
 }
 
-window.copiarKey = function(){
+window.copiarKey =
+function(){
 
 const texto =
 keyGenerada.innerText;
@@ -695,6 +829,28 @@ texto
 );
 
 alert("KEY COPIADA");
+
+}
+
+// CARACTERISTICAS
+
+window.mostrarCaracteristicas =
+function(texto){
+
+popupCaracteristicas.style.display =
+"flex";
+
+document.getElementById(
+"contenidoCaracteristicas"
+).innerHTML = texto;
+
+}
+
+window.cerrarCaracteristicas =
+function(){
+
+popupCaracteristicas.style.display =
+"none";
 
 }
 
