@@ -153,9 +153,7 @@ Recargar Créditos
 
 </div>
 
-<!-- ========================= -->
 <!-- MIS KEYS -->
-<!-- ========================= -->
 
 <div class="card">
 
@@ -173,9 +171,7 @@ No tienes keys
 
 </div>
 
-<!-- ========================= -->
 <!-- HISTORIAL -->
-<!-- ========================= -->
 
 <div class="card">
 
@@ -193,23 +189,19 @@ Sin compras
 
 </div>
 
+<!-- PRODUCTOS -->
+
 <div class="grid">
 
 <!-- PRODUCTO 1 -->
 
 <div class="product">
 
-<!-- CAMBIAR IMAGEN -->
-
 <img src="https://yt3.googleusercontent.com/pAJ7h-NCLwPkeqvO6qZu4_prNDaVGKgocR41XnCv0rCXzw_iJ7qX7rMkOnMVpGAVSEU9XDdKzns=s160-c-k-c0x00ffffff-no-rj">
-
-<!-- CAMBIAR NOMBRE -->
 
 <h2>
 Panel Sebxr Mods
 </h2>
-
-<!-- CAMBIAR DESCRIPCION -->
 
 <p>
 Panel premium sin blacklist
@@ -478,6 +470,8 @@ getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// FIREBASE
+
 const firebaseConfig = {
 
 apiKey: "AIzaSyBtbovWtH-fnSA2KqbobIFjtbNtcicsi-k",
@@ -550,8 +544,10 @@ return key;
 
 window.login = async function(){
 
-const email =
-email.value;
+const emailValue =
+document.getElementById(
+"email"
+).value;
 
 const password =
 document.getElementById(
@@ -562,7 +558,7 @@ try{
 
 await signInWithEmailAndPassword(
 auth,
-email,
+emailValue,
 password
 );
 
@@ -579,7 +575,7 @@ err.message;
 
 window.register = async function(){
 
-const email =
+const emailValue =
 document.getElementById(
 "email"
 ).value;
@@ -594,7 +590,7 @@ try{
 const cred =
 await createUserWithEmailAndPassword(
 auth,
-email,
+emailValue,
 password
 );
 
@@ -602,7 +598,7 @@ await setDoc(
 doc(db,"users",cred.user.uid),
 {
 
-email:email,
+email:emailValue,
 
 uid:cred.user.uid,
 
@@ -666,7 +662,7 @@ nuevoSnap.data();
 creditos.innerHTML =
 datos.creditos || 0;
 
-// CARGAR KEYS
+// KEYS
 
 const keysQuery =
 query(
@@ -693,10 +689,28 @@ new Date(data.expira);
 let restante =
 expira - ahora;
 
+// EXPIRADA
+
 if(restante <= 0){
 
 data.estado =
 "vencida";
+
+}
+
+// ANTI SHARE
+
+const dispositivoActual =
+navigator.userAgent;
+
+if(
+data.antiShare &&
+data.deviceLock !=
+dispositivoActual
+){
+
+data.estado =
+"KEY COMPARTIDA";
 
 }
 
@@ -726,8 +740,7 @@ htmlKeys += `
 </p>
 
 <p>
-📌 Estado:
-${data.estado}
+📌 ${data.estado}
 </p>
 
 <p>
@@ -907,15 +920,25 @@ duracion,
 precio
 ){
 
+try{
+
 const user =
 auth.currentUser;
 
-if(!user)return;
+if(!user){
+
+alert("Inicia sesión");
+
+return;
+
+}
 
 let creditosActuales =
-parseInt(
-creditos.innerHTML
-);
+Number(
+creditos.innerText
+)||0;
+
+// SIN CREDITOS
 
 if(creditosActuales < precio){
 
@@ -927,11 +950,15 @@ return;
 
 }
 
+// GENERAR KEY
+
 const nuevaKey =
 generarKey();
 
 const userRef =
 doc(db,"users",user.uid);
+
+// RESTAR CREDITOS
 
 await updateDoc(userRef,{
 
@@ -939,6 +966,8 @@ creditos:
 creditosActuales - precio
 
 });
+
+// CREAR KEY
 
 await addDoc(
 collection(db,"keys"),
@@ -967,6 +996,11 @@ Date.now() +
 ).toISOString(),
 
 dispositivo:
+navigator.userAgent,
+
+antiShare:true,
+
+deviceLock:
 navigator.userAgent
 
 });
@@ -992,9 +1026,13 @@ new Date()
 
 });
 
+// ACTUALIZAR CREDITOS
+
 creditos.innerHTML =
 
 creditosActuales - precio;
+
+// MOSTRAR KEY
 
 popupKey.style.display =
 "flex";
@@ -1002,7 +1040,27 @@ popupKey.style.display =
 keyGenerada.innerHTML =
 nuevaKey;
 
+// CERRAR
+
 cerrarDuraciones();
+
+// RECARGAR
+
+setTimeout(()=>{
+
+location.reload();
+
+},1500);
+
+}catch(err){
+
+console.log(err);
+
+alert(
+"ERROR EN LA COMPRA"
+);
+
+}
 
 }
 
