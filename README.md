@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sebxr Mods Store</title>
+<title>SEBXR MODS</title>
 
 <style>
 
@@ -10,7 +10,7 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:Arial;
 }
 
 body{
@@ -24,6 +24,7 @@ text-align:center;
 margin-bottom:20px;
 font-size:40px;
 color:#00ff88;
+
 text-shadow:
 0 0 10px #00ff88,
 0 0 20px #00ff88;
@@ -35,14 +36,17 @@ border:1px solid #00ff88;
 border-radius:20px;
 padding:20px;
 margin-bottom:20px;
+
 box-shadow:
 0 0 20px rgba(0,255,136,0.2);
 }
 
 .grid{
 display:grid;
+
 grid-template-columns:
 repeat(auto-fit,minmax(280px,1fr));
+
 gap:20px;
 }
 
@@ -56,6 +60,7 @@ transition:0.3s;
 
 .product:hover{
 transform:scale(1.03);
+
 box-shadow:
 0 0 20px #00ff88;
 }
@@ -83,6 +88,7 @@ transition:0.3s;
 
 button:hover{
 transform:scale(1.03);
+
 box-shadow:
 0 0 15px #00ff88;
 }
@@ -210,7 +216,7 @@ No tienes keys
 
 <div class="grid">
 
-<!-- PRODUCTO -->
+<!-- PRODUCTO 1 -->
 
 <div class="product">
 
@@ -221,7 +227,7 @@ Panel Sebxr Mods
 </h2>
 
 <p>
-Panel premium sin blacklist
+Panel premium
 </p>
 
 <button onclick="abrirDuraciones('Panel Sebxr Mods')">
@@ -229,14 +235,14 @@ COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
-'✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Premium'
+'✔ Sin blacklist<br><br>✔ Premium<br><br>✔ Actualizaciones'
 )">
 DESCRIPCIÓN
 </button>
 
 </div>
 
-<!-- PRODUCTO -->
+<!-- PRODUCTO 2 -->
 
 <div class="product">
 
@@ -247,7 +253,7 @@ Aimbot Premium
 </h2>
 
 <p>
-Aimbot estable anti ban
+Aim estable
 </p>
 
 <button onclick="abrirDuraciones('Aimbot Premium')">
@@ -255,14 +261,14 @@ COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
-'✔ Aim suave<br><br>✔ Configurable'
+'✔ Aim suave<br><br>✔ Anti ban'
 )">
 DESCRIPCIÓN
 </button>
 
 </div>
 
-<!-- PRODUCTO -->
+<!-- PRODUCTO 3 -->
 
 <div class="product">
 
@@ -281,7 +287,7 @@ COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
-'✔ Música ilimitada<br><br>✔ Premium'
+'✔ Premium estable'
 )">
 DESCRIPCIÓN
 </button>
@@ -513,6 +519,8 @@ getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// FIREBASE
+
 const firebaseConfig = {
 
 apiKey: "AIzaSyBtbovWtH-fnSA2KqbobIFjtbNtcicsi-k",
@@ -530,10 +538,7 @@ messagingSenderId:
 "393545047716",
 
 appId:
-"1:393545047716:web:07fb512bc7ee970bdbd031",
-
-measurementId:
-"G-EZBWVZDK5E"
+"1:393545047716:web:07fb512bc7ee970bdbd031"
 
 };
 
@@ -738,38 +743,112 @@ cantidad + " créditos";
 // CUPONES
 
 window.aplicarCupon =
-function(){
+async function(){
 
-const cupon =
+const codigo =
 cuponInput.value
 .toUpperCase();
 
-if(cupon == "SEBXR10"){
+const user =
+auth.currentUser;
+
+// CUPONES DESCUENTO
+
+if(codigo == "SEBXR10"){
 
 descuento = 10;
 
 cuponInfo.innerHTML =
 "✅ 10% OFF";
 
+calcularPrecio();
+
+return;
+
 }
-else if(cupon == "SEBXR20"){
+
+if(codigo == "SEBXR20"){
 
 descuento = 20;
 
 cuponInfo.innerHTML =
 "✅ 20% OFF";
 
-}
-else{
+calcularPrecio();
 
-descuento = 0;
+return;
+
+}
+
+// CUPONES FIRESTORE
+
+try{
+
+const cuponRef =
+doc(db,"cupones",codigo);
+
+const cuponSnap =
+await getDoc(cuponRef);
+
+if(!cuponSnap.exists()){
 
 cuponInfo.innerHTML =
 "❌ CUPÓN INVÁLIDO";
 
+return;
+
 }
 
-calcularPrecio();
+const datos =
+cuponSnap.data();
+
+if(datos.activo != true){
+
+cuponInfo.innerHTML =
+"❌ CUPÓN DESACTIVADO";
+
+return;
+
+}
+
+const cantidad =
+datos.creditos || 0;
+
+const userRef =
+doc(db,"users",user.uid);
+
+const userSnap =
+await getDoc(userRef);
+
+const userData =
+userSnap.data();
+
+const nuevosCreditos =
+
+(userData.creditos || 0)
++ cantidad;
+
+await updateDoc(userRef,{
+
+creditos:nuevosCreditos
+
+});
+
+creditos.innerHTML =
+nuevosCreditos;
+
+cuponInfo.innerHTML =
+
+`✅ +${cantidad} créditos añadidos`;
+
+}catch(err){
+
+console.log(err);
+
+cuponInfo.innerHTML =
+"❌ ERROR";
+
+}
 
 }
 
