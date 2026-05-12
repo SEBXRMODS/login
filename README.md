@@ -211,6 +211,12 @@ Panel premium sin blacklist
 Comprar
 </button>
 
+<button onclick="mostrarDescripcion(
+'✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Keys automáticas<br><br>✔ Actualizaciones premium<br><br>✔ Soporte incluido'
+)">
+Descripción
+</button>
+
 </div>
 
 <!-- PRODUCTO 2 -->
@@ -231,6 +237,12 @@ Aimbot premium estable
 Comprar
 </button>
 
+<button onclick="mostrarDescripcion(
+'✔ Aim suave<br><br>✔ Configurable<br><br>✔ Anti ban<br><br>✔ Estable'
+)">
+Descripción
+</button>
+
 </div>
 
 <!-- PRODUCTO 3 -->
@@ -249,6 +261,12 @@ Spotify sin anuncios premium
 
 <button onclick="abrirDuraciones('Spotify Premium')">
 Comprar
+</button>
+
+<button onclick="mostrarDescripcion(
+'✔ Sin anuncios<br><br>✔ Música ilimitada<br><br>✔ Calidad alta<br><br>✔ Premium estable'
+)">
+Descripción
 </button>
 
 </div>
@@ -413,6 +431,30 @@ CERRAR
 
 </div>
 
+<!-- POPUP DESCRIPCION -->
+
+<div id="popupDescripcion" class="popup">
+
+<div class="popup-content">
+
+<span
+class="cerrar"
+onclick="cerrarDescripcion()">
+
+×
+
+</span>
+
+<h2>
+DESCRIPCIÓN
+</h2>
+
+<p id="descripcionTexto"></p>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import { initializeApp }
@@ -437,8 +479,7 @@ collection,
 addDoc,
 query,
 where,
-getDocs,
-deleteDoc
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -519,18 +560,12 @@ return key;
 window.login =
 async function(){
 
-const emailValue =
-email.value;
-
-const passwordValue =
-password.value;
-
 try{
 
 await signInWithEmailAndPassword(
 auth,
-emailValue,
-passwordValue
+email.value,
+password.value
 );
 
 }catch(err){
@@ -547,26 +582,20 @@ err.message;
 window.register =
 async function(){
 
-const emailValue =
-email.value;
-
-const passwordValue =
-password.value;
-
 try{
 
 const cred =
 await createUserWithEmailAndPassword(
 auth,
-emailValue,
-passwordValue
+email.value,
+password.value
 );
 
 await setDoc(
 doc(db,"users",cred.user.uid),
 {
 
-email:emailValue,
+email:email.value,
 
 uid:cred.user.uid,
 
@@ -600,26 +629,6 @@ loginBox.style.display =
 
 panel.style.display =
 "block";
-
-// ONLINE USER
-
-await setDoc(
-doc(db,"onlineUsers",user.uid),
-{
-
-email:user.email,
-
-uid:user.uid,
-
-device:
-navigator.userAgent,
-
-lastSeen:
-new Date().toISOString(),
-
-online:true
-
-});
 
 const userRef =
 doc(db,"users",user.uid);
@@ -663,6 +672,10 @@ htmlKeys += `
 
 <p>
 📌 ${data.estado}
+</p>
+
+<p>
+⏳ ${data.duracion}
 </p>
 
 </div>
@@ -729,29 +742,6 @@ htmlCompras =
 
 historialCompras.innerHTML =
 htmlCompras;
-
-}
-
-});
-
-// CERRAR ONLINE
-
-window.addEventListener(
-"beforeunload",
-async()=>{
-
-const user =
-auth.currentUser;
-
-if(user){
-
-await deleteDoc(
-doc(
-db,
-"onlineUsers",
-user.uid
-)
-);
 
 }
 
@@ -862,7 +852,6 @@ descuentoActual =
 data.descuento;
 
 cuponEstado.innerHTML =
-
 "✅ Cupón aplicado";
 
 calcularPrecio();
@@ -1067,6 +1056,27 @@ keyGenerada.innerText
 alert(
 "KEY COPIADA"
 );
+
+}
+
+// DESCRIPCION
+
+window.mostrarDescripcion =
+function(texto){
+
+popupDescripcion.style.display =
+"flex";
+
+descripcionTexto.innerHTML =
+texto;
+
+}
+
+window.cerrarDescripcion =
+function(){
+
+popupDescripcion.style.display =
+"none";
 
 }
 
