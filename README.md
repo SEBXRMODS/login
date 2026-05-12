@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tienda Sebxr Mods</title>
+<title>Sebxr Mods Store</title>
 
 <style>
 
@@ -10,21 +10,13 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:Arial,sans-serif;
 }
 
 body{
-background:
-linear-gradient(
-180deg,
-#050505,
-#0d0d0d,
-#050505
-);
-
+background:#050505;
 color:white;
 padding:20px;
-min-height:100vh;
 }
 
 h1{
@@ -37,83 +29,38 @@ text-shadow:
 0 0 20px #00ff88;
 }
 
-h2{
-margin-bottom:10px;
-color:#00ff88;
-}
-
 .card{
-
-background:
-rgba(20,20,20,0.95);
-
-border:
-1px solid #00ff88;
-
-padding:20px;
-
+background:#111;
+border:1px solid #00ff88;
 border-radius:20px;
-
+padding:20px;
 margin-bottom:20px;
-
 box-shadow:
-0 0 15px rgba(0,255,136,0.2);
-
-backdrop-filter:blur(10px);
-
-transition:0.3s;
-}
-
-.card:hover{
-
-transform:translateY(-3px);
-
-box-shadow:
-0 0 25px rgba(0,255,136,0.5);
-
+0 0 20px rgba(0,255,136,0.2);
 }
 
 .grid{
-
 display:grid;
-
 grid-template-columns:
 repeat(auto-fit,minmax(280px,1fr));
-
 gap:20px;
-
 }
 
 .product{
-
-background:
-rgba(15,15,15,0.95);
-
-border:
-1px solid #00ff88;
-
+background:#111;
+border:1px solid #00ff88;
 border-radius:20px;
-
 padding:15px;
-
 transition:0.3s;
-
-box-shadow:
-0 0 15px rgba(0,255,136,0.15);
-
 }
 
 .product:hover{
-
 transform:scale(1.03);
-
 box-shadow:
-0 0 25px rgba(0,255,136,0.45);
-
+0 0 20px #00ff88;
 }
 
 .product img{
-
 width:100%;
 height:220px;
 object-fit:cover;
@@ -122,159 +69,68 @@ margin-bottom:10px;
 }
 
 button{
-
-background:
-linear-gradient(
-45deg,
-#00ff88,
-#00cc6f
-);
-
-color:black;
-
-border:none;
-
-padding:12px 20px;
-
-border-radius:12px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-margin-top:10px;
-
-transition:0.3s;
-
 width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:12px;
+background:#00ff88;
+color:black;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
 }
 
 button:hover{
-
 transform:scale(1.03);
-
 box-shadow:
-0 0 20px #00ff88;
-
+0 0 15px #00ff88;
 }
 
 input{
-
 width:100%;
-
 padding:12px;
-
-margin-bottom:10px;
-
+margin-top:10px;
 border-radius:12px;
-
-border:
-1px solid #00ff88;
-
-background:#111;
-
+border:1px solid #00ff88;
+background:#0d0d0d;
 color:white;
-
-outline:none;
-
 }
 
 .popup{
-
 display:none;
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
-background:
-rgba(0,0,0,0.85);
-
+background:rgba(0,0,0,0.85);
 justify-content:center;
 align-items:center;
-
 z-index:999;
-
 }
 
 .popup-content{
-
-background:
-#111;
-
-border:
-2px solid #00ff88;
-
-padding:30px;
-
+background:#111;
+border:2px solid #00ff88;
 border-radius:20px;
-
+padding:25px;
 width:340px;
-
 max-height:90vh;
-
 overflow:auto;
-
 text-align:center;
-
-box-shadow:
-0 0 30px rgba(0,255,136,0.4);
-
-animation:popupAnim 0.25s ease;
-
-}
-
-@keyframes popupAnim{
-
-from{
-
-opacity:0;
-transform:scale(0.8);
-
-}
-
-to{
-
-opacity:1;
-transform:scale(1);
-
-}
-
 }
 
 .cerrar{
-
 float:right;
-
 font-size:30px;
-
 cursor:pointer;
-
 color:#00ff88;
-
-transition:0.3s;
-
-}
-
-.cerrar:hover{
-
-transform:rotate(90deg);
-
 }
 
 #creditos{
-
+font-size:30px;
 color:#00ff88;
-
-font-size:28px;
-
-text-shadow:
-0 0 10px #00ff88;
-
 }
 
 </style>
@@ -316,7 +172,7 @@ REGISTRARSE
 <div id="panel" style="display:none;">
 
 <h1>
-🔥 TIENDA SEBXR MODS
+🔥 SEBXR MODS
 </h1>
 
 <div class="card">
@@ -332,7 +188,7 @@ RECARGAR CRÉDITOS
 
 </div>
 
-<!-- MIS KEYS -->
+<!-- KEYS -->
 
 <div class="card">
 
@@ -350,29 +206,11 @@ No tienes keys
 
 </div>
 
-<!-- HISTORIAL -->
-
-<div class="card">
-
-<h2>
-🧾 Historial
-</h2>
-
-<div id="historialCompras">
-
-<p>
-Sin compras
-</p>
-
-</div>
-
-</div>
-
 <!-- PRODUCTOS -->
 
 <div class="grid">
 
-<!-- PRODUCTO 1 -->
+<!-- PRODUCTO -->
 
 <div class="product">
 
@@ -391,40 +229,40 @@ COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
-'✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Keys automáticas<br><br>✔ Actualizaciones premium<br><br>✔ Soporte incluido'
+'✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Premium'
 )">
 DESCRIPCIÓN
 </button>
 
 </div>
 
-<!-- PRODUCTO 2 -->
+<!-- PRODUCTO -->
 
 <div class="product">
 
 <img src="https://i.imgur.com/u6dF9V7.png">
 
 <h2>
-Aimbot disimulado
+Aimbot Premium
 </h2>
 
 <p>
-Aimbot premium estable
+Aimbot estable anti ban
 </p>
 
-<button onclick="abrirDuraciones('Aimbot disimulado')">
+<button onclick="abrirDuraciones('Aimbot Premium')">
 COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
-'✔ Aim suave<br><br>✔ Configurable<br><br>✔ Anti ban<br><br>✔ Estable'
+'✔ Aim suave<br><br>✔ Configurable'
 )">
 DESCRIPCIÓN
 </button>
 
 </div>
 
-<!-- PRODUCTO 3 -->
+<!-- PRODUCTO -->
 
 <div class="product">
 
@@ -435,7 +273,7 @@ Spotify Premium
 </h2>
 
 <p>
-Spotify sin anuncios premium
+Spotify sin anuncios
 </p>
 
 <button onclick="abrirDuraciones('Spotify Premium')">
@@ -443,7 +281,7 @@ COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
-'✔ Sin anuncios<br><br>✔ Música ilimitada<br><br>✔ Calidad alta<br><br>✔ Premium estable'
+'✔ Música ilimitada<br><br>✔ Premium'
 )">
 DESCRIPCIÓN
 </button>
@@ -468,58 +306,95 @@ onclick="cerrarCreditos()">
 </span>
 
 <h2>
-RECARGAR CRÉDITOS
+💰 RECARGAR CRÉDITOS
 </h2>
 
-<p>
-Contacta para recargar:
+<input
+type="number"
+id="cantidadCreditos"
+placeholder="Cantidad de créditos"
+oninput="calcularPrecio()">
+
+<input
+type="text"
+id="cuponInput"
+placeholder="Cupón">
+
+<button onclick="aplicarCupon()">
+APLICAR CUPÓN
+</button>
+
+<p id="cuponInfo"></p>
+
+<h3>
+💵 Total:
+<span id="precioFinal">
+0
+</span>
+COP
+</h3>
+
+<p id="creditosFinal">
+0 créditos
 </p>
 
-<br>
+<button onclick="mostrarPagos()">
+CONTINUAR
+</button>
+
+<div id="metodosPago" style="display:none;">
+
+<hr style="margin:15px 0; border-color:#00ff88;">
+
+<div class="card">
+
+<h3>
+NEQUI
+</h3>
+
+<p>
+3001234567
+</p>
+
+<button onclick="copiarNumero()">
+COPIAR
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>
+PAYPAL
+</h3>
+
+<p>
+tucorreo@paypal.com
+</p>
 
 <a
-href="https://wa.me/573001234567"
+href="https://paypal.me/"
 target="_blank">
 
 <button>
-WHATSAPP
+ABRIR PAYPAL
 </button>
 
 </a>
 
-<br><br>
-
-<p>
-Nequi:
-</p>
-
-<h3>
-3001234567
-</h3>
-
 </div>
 
+<a
+id="btnComprobante"
+target="_blank">
+
+<button>
+ENVIAR COMPROBANTE
+</button>
+
+</a>
+
 </div>
-
-<!-- POPUP DESCRIPCION -->
-
-<div id="popupDescripcion" class="popup">
-
-<div class="popup-content">
-
-<span
-class="cerrar"
-onclick="cerrarDescripcion()">
-
-×
-
-</span>
-
-<h2>
-DESCRIPCIÓN
-</h2>
-
-<p id="descripcionTexto"></p>
 
 </div>
 
@@ -580,11 +455,32 @@ Tu key:
 COPIAR KEY
 </button>
 
-<br><br>
-
 <button onclick="cerrarKey()">
 CERRAR
 </button>
+
+</div>
+
+</div>
+
+<!-- POPUP DESCRIPCION -->
+
+<div id="popupDescripcion" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar"
+onclick="cerrarDescripcion()">
+
+×
+
+</span>
+
+<h2>
+DESCRIPCIÓN
+</h2>
+
+<p id="descripcionTexto"></p>
 
 </div>
 
@@ -650,58 +546,7 @@ getAuth(app);
 const db =
 getFirestore(app);
 
-// CREDITOS
-
-window.abrirCreditos =
-function(){
-
-popupCreditos.style.display =
-"flex";
-
-}
-
-window.cerrarCreditos =
-function(){
-
-popupCreditos.style.display =
-"none";
-
-}
-
-// GENERAR KEY
-
-function generarKey(){
-
-const chars =
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-let key = "SEBXR-";
-
-for(let i=0;i<4;i++){
-
-key += chars.charAt(
-Math.floor(
-Math.random()*chars.length
-)
-);
-
-}
-
-key += "-";
-
-for(let i=0;i<4;i++){
-
-key += chars.charAt(
-Math.floor(
-Math.random()*chars.length
-)
-);
-
-}
-
-return key;
-
-}
+let descuento = 0;
 
 // LOGIN
 
@@ -744,9 +589,7 @@ doc(db,"users",cred.user.uid),
 {
 
 email:email.value,
-
 uid:cred.user.uid,
-
 creditos:0
 
 });
@@ -792,39 +635,31 @@ datos.creditos || 0;
 
 // KEYS
 
-const keysQuery =
+const q =
 query(
 collection(db,"keys"),
 where("uid","==",user.uid)
 );
 
-const keysSnap =
-await getDocs(keysQuery);
+const snap =
+await getDocs(q);
 
-let htmlKeys = "";
+let html = "";
 
-keysSnap.forEach((docu)=>{
+snap.forEach((docu)=>{
 
 const data =
 docu.data();
 
-htmlKeys += `
+html += `
 
 <div class="product">
 
 <h3>${data.producto}</h3>
 
-<p>
-🔑 ${data.key}
-</p>
+<p>🔑 ${data.key}</p>
 
-<p>
-📌 ${data.estado}
-</p>
-
-<p>
-⏳ ${data.duracion}
-</p>
+<p>⏳ ${data.duracion}</p>
 
 </div>
 
@@ -832,19 +667,175 @@ htmlKeys += `
 
 });
 
-if(htmlKeys == ""){
+if(html == ""){
 
-htmlKeys =
+html =
 "<p>No tienes keys</p>";
 
 }
 
 misKeys.innerHTML =
-htmlKeys;
+html;
 
 }
 
 });
+
+// CREDITOS
+
+window.abrirCreditos =
+function(){
+
+popupCreditos.style.display =
+"flex";
+
+}
+
+window.cerrarCreditos =
+function(){
+
+popupCreditos.style.display =
+"none";
+
+metodosPago.style.display =
+"none";
+
+}
+
+// PRECIO
+
+window.calcularPrecio =
+function(){
+
+const cantidad =
+Number(
+cantidadCreditos.value
+)||0;
+
+// 1 CREDITO = 500 COP
+
+let precio =
+cantidad * 500;
+
+if(descuento > 0){
+
+precio =
+precio - (
+precio *
+descuento / 100
+);
+
+}
+
+precioFinal.innerHTML =
+precio.toLocaleString();
+
+creditosFinal.innerHTML =
+cantidad + " créditos";
+
+}
+
+// CUPONES
+
+window.aplicarCupon =
+function(){
+
+const cupon =
+cuponInput.value
+.toUpperCase();
+
+if(cupon == "SEBXR10"){
+
+descuento = 10;
+
+cuponInfo.innerHTML =
+"✅ 10% OFF";
+
+}
+else if(cupon == "SEBXR20"){
+
+descuento = 20;
+
+cuponInfo.innerHTML =
+"✅ 20% OFF";
+
+}
+else{
+
+descuento = 0;
+
+cuponInfo.innerHTML =
+"❌ CUPÓN INVÁLIDO";
+
+}
+
+calcularPrecio();
+
+}
+
+// PAGOS
+
+window.mostrarPagos =
+function(){
+
+if(!cantidadCreditos.value){
+
+alert(
+"PON UNA CANTIDAD"
+);
+
+return;
+
+}
+
+metodosPago.style.display =
+"block";
+
+const mensaje =
+
+`Hola quiero recargar ${cantidadCreditos.value} créditos por ${precioFinal.innerText} COP`;
+
+btnComprobante.href =
+
+`https://wa.me/573001234567?text=${encodeURIComponent(mensaje)}`;
+
+}
+
+// COPIAR
+
+window.copiarNumero =
+function(){
+
+navigator.clipboard.writeText(
+"3001234567"
+);
+
+alert(
+"NÚMERO COPIADO"
+);
+
+}
+
+// DESCRIPCION
+
+window.mostrarDescripcion =
+function(texto){
+
+popupDescripcion.style.display =
+"flex";
+
+descripcionTexto.innerHTML =
+texto;
+
+}
+
+window.cerrarDescripcion =
+function(){
+
+popupDescripcion.style.display =
+"none";
+
+}
 
 // DURACIONES
 
@@ -864,6 +855,41 @@ function(){
 
 popupDuraciones.style.display =
 "none";
+
+}
+
+// GENERAR KEY
+
+function generarKey(){
+
+const chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+let key = "SEBXR-";
+
+for(let i=0;i<4;i++){
+
+key += chars.charAt(
+Math.floor(
+Math.random()*chars.length
+)
+);
+
+}
+
+key += "-";
+
+for(let i=0;i<4;i++){
+
+key += chars.charAt(
+Math.floor(
+Math.random()*chars.length
+)
+);
+
+}
+
+return key;
 
 }
 
@@ -898,42 +924,29 @@ return;
 const nuevaKey =
 generarKey();
 
-const userRef =
-doc(db,"users",user.uid);
-
-await updateDoc(userRef,{
+await updateDoc(
+doc(db,"users",user.uid),
+{
 
 creditos:
 creditosActuales - precio
 
 });
 
-// KEY
-
 await addDoc(
 collection(db,"keys"),
 {
 
-key:nuevaKey,
-
+uid:user.uid,
 producto:
 tituloDuracion.innerHTML,
-
 duracion:duracion,
-
-estado:"activa",
-
-uid:user.uid,
-
-email:user.email,
-
-creada:
-new Date().toISOString()
+key:nuevaKey,
+estado:"activa"
 
 });
 
 creditos.innerHTML =
-
 creditosActuales - precio;
 
 popupKey.style.display =
@@ -946,25 +959,17 @@ cerrarDuraciones();
 
 }catch(err){
 
-console.log(err);
-
 alert(
 "ERROR EN LA COMPRA"
 );
+
+console.log(err);
 
 }
 
 }
 
 // KEY
-
-window.cerrarKey =
-function(){
-
-popupKey.style.display =
-"none";
-
-}
 
 window.copiarKey =
 function(){
@@ -979,23 +984,10 @@ alert(
 
 }
 
-// DESCRIPCION
-
-window.mostrarDescripcion =
-function(texto){
-
-popupDescripcion.style.display =
-"flex";
-
-descripcionTexto.innerHTML =
-texto;
-
-}
-
-window.cerrarDescripcion =
+window.cerrarKey =
 function(){
 
-popupDescripcion.style.display =
+popupKey.style.display =
 "none";
 
 }
