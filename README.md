@@ -6,96 +6,275 @@
 
 <style>
 
-body{
-background:#0a0a0a;
-color:white;
-font-family:Arial;
-padding:20px;
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:
+linear-gradient(
+180deg,
+#050505,
+#0d0d0d,
+#050505
+);
+
+color:white;
+padding:20px;
+min-height:100vh;
 }
 
 h1{
 text-align:center;
+margin-bottom:20px;
+font-size:40px;
+color:#00ff88;
+text-shadow:
+0 0 10px #00ff88,
+0 0 20px #00ff88;
+}
+
+h2{
+margin-bottom:10px;
+color:#00ff88;
 }
 
 .card{
-background:#111;
-border:1px solid #333;
-padding:15px;
-border-radius:15px;
+
+background:
+rgba(20,20,20,0.95);
+
+border:
+1px solid #00ff88;
+
+padding:20px;
+
+border-radius:20px;
+
 margin-bottom:20px;
+
+box-shadow:
+0 0 15px rgba(0,255,136,0.2);
+
+backdrop-filter:blur(10px);
+
+transition:0.3s;
 }
 
-input{
-width:100%;
-padding:12px;
-margin-bottom:10px;
-background:#111;
-color:white;
-border:1px solid #444;
-border-radius:10px;
-}
+.card:hover{
 
-button{
-padding:12px 20px;
-border:none;
-border-radius:10px;
-background:#00ff88;
-color:black;
-font-weight:bold;
-cursor:pointer;
-margin:5px;
+transform:translateY(-3px);
+
+box-shadow:
+0 0 25px rgba(0,255,136,0.5);
+
 }
 
 .grid{
+
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
 gap:20px;
+
 }
 
 .product{
-background:#111;
-border:1px solid #333;
-border-radius:15px;
+
+background:
+rgba(15,15,15,0.95);
+
+border:
+1px solid #00ff88;
+
+border-radius:20px;
+
 padding:15px;
+
+transition:0.3s;
+
+box-shadow:
+0 0 15px rgba(0,255,136,0.15);
+
+}
+
+.product:hover{
+
+transform:scale(1.03);
+
+box-shadow:
+0 0 25px rgba(0,255,136,0.45);
+
 }
 
 .product img{
+
 width:100%;
-height:200px;
+height:220px;
 object-fit:cover;
-border-radius:10px;
+border-radius:15px;
+margin-bottom:10px;
+}
+
+button{
+
+background:
+linear-gradient(
+45deg,
+#00ff88,
+#00cc6f
+);
+
+color:black;
+
+border:none;
+
+padding:12px 20px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+margin-top:10px;
+
+transition:0.3s;
+
+width:100%;
+}
+
+button:hover{
+
+transform:scale(1.03);
+
+box-shadow:
+0 0 20px #00ff88;
+
+}
+
+input{
+
+width:100%;
+
+padding:12px;
+
+margin-bottom:10px;
+
+border-radius:12px;
+
+border:
+1px solid #00ff88;
+
+background:#111;
+
+color:white;
+
+outline:none;
+
 }
 
 .popup{
+
 display:none;
+
 position:fixed;
+
 top:0;
 left:0;
+
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.8);
+
+background:
+rgba(0,0,0,0.85);
+
 justify-content:center;
 align-items:center;
+
 z-index:999;
+
 }
 
 .popup-content{
-background:#111;
-border:2px solid #00ff88;
+
+background:
+#111;
+
+border:
+2px solid #00ff88;
+
 padding:30px;
-border-radius:15px;
-width:320px;
-text-align:center;
+
+border-radius:20px;
+
+width:340px;
+
 max-height:90vh;
+
 overflow:auto;
+
+text-align:center;
+
+box-shadow:
+0 0 30px rgba(0,255,136,0.4);
+
+animation:popupAnim 0.25s ease;
+
+}
+
+@keyframes popupAnim{
+
+from{
+
+opacity:0;
+transform:scale(0.8);
+
+}
+
+to{
+
+opacity:1;
+transform:scale(1);
+
+}
+
 }
 
 .cerrar{
+
 float:right;
+
 font-size:30px;
+
 cursor:pointer;
+
 color:#00ff88;
+
+transition:0.3s;
+
+}
+
+.cerrar:hover{
+
+transform:rotate(90deg);
+
+}
+
+#creditos{
+
+color:#00ff88;
+
+font-size:28px;
+
+text-shadow:
+0 0 10px #00ff88;
+
 }
 
 </style>
@@ -137,7 +316,7 @@ REGISTRARSE
 <div id="panel" style="display:none;">
 
 <h1>
-TIENDA SEBXR MODS
+🔥 TIENDA SEBXR MODS
 </h1>
 
 <div class="card">
@@ -148,7 +327,7 @@ TIENDA SEBXR MODS
 </h2>
 
 <button onclick="abrirCreditos()">
-Recargar Créditos
+RECARGAR CRÉDITOS
 </button>
 
 </div>
@@ -208,13 +387,13 @@ Panel premium sin blacklist
 </p>
 
 <button onclick="abrirDuraciones('Panel Sebxr Mods')">
-Comprar
+COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
 '✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Keys automáticas<br><br>✔ Actualizaciones premium<br><br>✔ Soporte incluido'
 )">
-Descripción
+DESCRIPCIÓN
 </button>
 
 </div>
@@ -234,13 +413,13 @@ Aimbot premium estable
 </p>
 
 <button onclick="abrirDuraciones('Aimbot disimulado')">
-Comprar
+COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
 '✔ Aim suave<br><br>✔ Configurable<br><br>✔ Anti ban<br><br>✔ Estable'
 )">
-Descripción
+DESCRIPCIÓN
 </button>
 
 </div>
@@ -260,13 +439,13 @@ Spotify sin anuncios premium
 </p>
 
 <button onclick="abrirDuraciones('Spotify Premium')">
-Comprar
+COMPRAR
 </button>
 
 <button onclick="mostrarDescripcion(
 '✔ Sin anuncios<br><br>✔ Música ilimitada<br><br>✔ Calidad alta<br><br>✔ Premium estable'
 )">
-Descripción
+DESCRIPCIÓN
 </button>
 
 </div>
@@ -275,92 +454,25 @@ Descripción
 
 </div>
 
-<!-- POPUP CREDITOS -->
+<!-- POPUP DESCRIPCION -->
 
-<div id="popupCreditos" class="popup">
+<div id="popupDescripcion" class="popup">
 
 <div class="popup-content">
 
-<span class="cerrar"
-onclick="cerrarCreditos()">
+<span
+class="cerrar"
+onclick="cerrarDescripcion()">
 
 ×
 
 </span>
 
 <h2>
-RECARGAR
+DESCRIPCIÓN
 </h2>
 
-<input
-type="number"
-id="cantidadCreditos"
-placeholder="Cantidad créditos"
-oninput="calcularPrecio()">
-
-<p id="precioFinal">
-Total: $0 COP
-</p>
-
-<input
-type="text"
-id="cuponInput"
-placeholder="Cupón">
-
-<button onclick="aplicarCupon()">
-Aplicar Cupón
-</button>
-
-<p id="cuponEstado"></p>
-
-<button onclick="mostrarMetodos()">
-Continuar
-</button>
-
-<div id="metodosPago" style="display:none;">
-
-<button onclick="mostrarPago('NEQUI','3001234567')">
-NEQUI
-</button>
-
-<button onclick="mostrarPago('PAYPAL','correo@paypal.com')">
-PAYPAL
-</button>
-
-<br><br>
-
-<a
-href="https://wa.me/573001234567"
-target="_blank">
-
-<button>
-ENVIAR COMPROBANTE
-</button>
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- POPUP PAGO -->
-
-<div id="popupPago" class="popup">
-
-<div class="popup-content">
-
-<span class="cerrar"
-onclick="cerrarPago()">
-
-×
-
-</span>
-
-<h2 id="tituloPago"></h2>
-
-<p id="infoPago"></p>
+<p id="descripcionTexto"></p>
 
 </div>
 
@@ -408,7 +520,7 @@ onclick="cerrarDuraciones()">
 <div class="popup-content">
 
 <h2>
-COMPRA EXITOSA
+✅ COMPRA EXITOSA
 </h2>
 
 <p>
@@ -426,30 +538,6 @@ COPIAR KEY
 <button onclick="cerrarKey()">
 CERRAR
 </button>
-
-</div>
-
-</div>
-
-<!-- POPUP DESCRIPCION -->
-
-<div id="popupDescripcion" class="popup">
-
-<div class="popup-content">
-
-<span
-class="cerrar"
-onclick="cerrarDescripcion()">
-
-×
-
-</span>
-
-<h2>
-DESCRIPCIÓN
-</h2>
-
-<p id="descripcionTexto"></p>
 
 </div>
 
@@ -474,7 +562,6 @@ doc,
 getDoc,
 setDoc,
 updateDoc,
-increment,
 collection,
 addDoc,
 query,
@@ -482,8 +569,6 @@ where,
 getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// FIREBASE
 
 const firebaseConfig = {
 
@@ -517,8 +602,6 @@ getAuth(app);
 
 const db =
 getFirestore(app);
-
-let descuentoActual = 0;
 
 // GENERAR KEY
 
@@ -694,216 +777,9 @@ htmlKeys =
 misKeys.innerHTML =
 htmlKeys;
 
-// HISTORIAL
-
-const comprasQuery =
-query(
-collection(db,"purchases"),
-where("uid","==",user.uid)
-);
-
-const comprasSnap =
-await getDocs(comprasQuery);
-
-let htmlCompras = "";
-
-comprasSnap.forEach((docu)=>{
-
-const data =
-docu.data();
-
-htmlCompras += `
-
-<div class="product">
-
-<h3>${data.producto}</h3>
-
-<p>
-📅 ${data.fecha}
-</p>
-
-<p>
-💰 ${data.creditos}
- créditos
-</p>
-
-</div>
-
-`;
-
-});
-
-if(htmlCompras == ""){
-
-htmlCompras =
-"<p>Sin compras</p>";
-
-}
-
-historialCompras.innerHTML =
-htmlCompras;
-
 }
 
 });
-
-// CREDITOS
-
-window.abrirCreditos =
-function(){
-
-popupCreditos.style.display =
-"flex";
-
-}
-
-window.cerrarCreditos =
-function(){
-
-popupCreditos.style.display =
-"none";
-
-}
-
-window.calcularPrecio =
-function(){
-
-let c =
-parseInt(
-cantidadCreditos.value
-)||0;
-
-let total =
-c * 50;
-
-if(descuentoActual > 0){
-
-total =
-total -
-(total * descuentoActual / 100);
-
-}
-
-precioFinal.innerHTML =
-
-"Total: $" +
-
-Math.floor(total)
-.toLocaleString()
-
-+ " COP";
-
-}
-
-// CUPON
-
-window.aplicarCupon =
-async function(){
-
-const codigo =
-cuponInput.value
-.toUpperCase();
-
-if(!codigo){
-
-return;
-
-}
-
-try{
-
-const ref =
-doc(db,"coupons",codigo);
-
-const snap =
-await getDoc(ref);
-
-if(!snap.exists()){
-
-cuponEstado.innerHTML =
-"❌ Cupón inválido";
-
-return;
-
-}
-
-const data =
-snap.data();
-
-if(!data.activo){
-
-cuponEstado.innerHTML =
-"❌ Cupón desactivado";
-
-return;
-
-}
-
-if(data.usos >= data.maxUsos){
-
-cuponEstado.innerHTML =
-"❌ Cupón agotado";
-
-return;
-
-}
-
-descuentoActual =
-data.descuento;
-
-cuponEstado.innerHTML =
-"✅ Cupón aplicado";
-
-calcularPrecio();
-
-await updateDoc(ref,{
-
-usos:
-increment(1)
-
-});
-
-}catch(err){
-
-console.log(err);
-
-}
-
-}
-
-// METODOS
-
-window.mostrarMetodos =
-function(){
-
-metodosPago.style.display =
-"block";
-
-}
-
-// PAGO
-
-window.mostrarPago =
-function(titulo,info){
-
-popupPago.style.display =
-"flex";
-
-tituloPago.innerHTML =
-titulo;
-
-infoPago.innerHTML =
-info;
-
-}
-
-window.cerrarPago =
-function(){
-
-popupPago.style.display =
-"none";
-
-}
 
 // DURACIONES
 
@@ -946,9 +822,9 @@ creditos.innerText
 
 if(creditosActuales < precio){
 
-cerrarDuraciones();
-
-abrirCreditos();
+alert(
+"NO TIENES CRÉDITOS"
+);
 
 return;
 
@@ -988,27 +864,6 @@ email:user.email,
 
 creada:
 new Date().toISOString()
-
-});
-
-// HISTORIAL
-
-await addDoc(
-collection(db,"purchases"),
-{
-
-uid:user.uid,
-
-producto:
-tituloDuracion.innerHTML,
-
-duracion:duracion,
-
-creditos:precio,
-
-fecha:
-new Date()
-.toLocaleString()
 
 });
 
