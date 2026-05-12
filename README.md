@@ -454,6 +454,53 @@ DESCRIPCIÓN
 
 </div>
 
+<!-- POPUP CREDITOS -->
+
+<div id="popupCreditos" class="popup">
+
+<div class="popup-content">
+
+<span class="cerrar"
+onclick="cerrarCreditos()">
+
+×
+
+</span>
+
+<h2>
+RECARGAR CRÉDITOS
+</h2>
+
+<p>
+Contacta para recargar:
+</p>
+
+<br>
+
+<a
+href="https://wa.me/573001234567"
+target="_blank">
+
+<button>
+WHATSAPP
+</button>
+
+</a>
+
+<br><br>
+
+<p>
+Nequi:
+</p>
+
+<h3>
+3001234567
+</h3>
+
+</div>
+
+</div>
+
 <!-- POPUP DESCRIPCION -->
 
 <div id="popupDescripcion" class="popup">
@@ -602,6 +649,24 @@ getAuth(app);
 
 const db =
 getFirestore(app);
+
+// CREDITOS
+
+window.abrirCreditos =
+function(){
+
+popupCreditos.style.display =
+"flex";
+
+}
+
+window.cerrarCreditos =
+function(){
+
+popupCreditos.style.display =
+"none";
+
+}
 
 // GENERAR KEY
 
@@ -822,9 +887,9 @@ creditos.innerText
 
 if(creditosActuales < precio){
 
-alert(
-"NO TIENES CRÉDITOS"
-);
+cerrarDuraciones();
+
+abrirCreditos();
 
 return;
 
