@@ -211,12 +211,6 @@ Panel premium sin blacklist
 Comprar
 </button>
 
-<button onclick="mostrarCaracteristicas(
-'✔ Sin blacklist<br><br>✔ Anti ban<br><br>✔ Keys automáticas<br><br>✔ Soporte incluido'
-)">
-Características
-</button>
-
 </div>
 
 <!-- PRODUCTO 2 -->
@@ -237,12 +231,6 @@ Aimbot premium estable
 Comprar
 </button>
 
-<button onclick="mostrarCaracteristicas(
-'✔ Aim suave<br><br>✔ Anti ban<br><br>✔ Estable<br><br>✔ Actualizaciones'
-)">
-Características
-</button>
-
 </div>
 
 <!-- PRODUCTO 3 -->
@@ -261,12 +249,6 @@ Spotify sin anuncios premium
 
 <button onclick="abrirDuraciones('Spotify Premium')">
 Comprar
-</button>
-
-<button onclick="mostrarCaracteristicas(
-'✔ Sin anuncios<br><br>✔ Calidad alta<br><br>✔ Premium estable<br><br>✔ Garantía incluida'
-)">
-Características
 </button>
 
 </div>
@@ -301,8 +283,6 @@ oninput="calcularPrecio()">
 <p id="precioFinal">
 Total: $0 COP
 </p>
-
-<!-- CUPON -->
 
 <input
 type="text"
@@ -433,29 +413,6 @@ CERRAR
 
 </div>
 
-<!-- POPUP CARACTERISTICAS -->
-
-<div id="popupCaracteristicas" class="popup">
-
-<div class="popup-content">
-
-<span class="cerrar"
-onclick="cerrarCaracteristicas()">
-
-×
-
-</span>
-
-<h2>
-CARACTERÍSTICAS
-</h2>
-
-<p id="contenidoCaracteristicas"></p>
-
-</div>
-
-</div>
-
 <script type="module">
 
 import { initializeApp }
@@ -480,7 +437,8 @@ collection,
 addDoc,
 query,
 where,
-getDocs
+getDocs,
+deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -520,7 +478,6 @@ const db =
 getFirestore(app);
 
 let descuentoActual = 0;
-let cuponActual = null;
 
 // GENERAR KEY
 
@@ -559,24 +516,21 @@ return key;
 
 // LOGIN
 
-window.login = async function(){
+window.login =
+async function(){
 
 const emailValue =
-document.getElementById(
-"email"
-).value;
+email.value;
 
-const password =
-document.getElementById(
-"password"
-).value;
+const passwordValue =
+password.value;
 
 try{
 
 await signInWithEmailAndPassword(
 auth,
 emailValue,
-password
+passwordValue
 );
 
 }catch(err){
@@ -590,17 +544,14 @@ err.message;
 
 // REGISTER
 
-window.register = async function(){
+window.register =
+async function(){
 
 const emailValue =
-document.getElementById(
-"email"
-).value;
+email.value;
 
-const password =
-document.getElementById(
-"password"
-).value;
+const passwordValue =
+password.value;
 
 try{
 
@@ -608,7 +559,7 @@ const cred =
 await createUserWithEmailAndPassword(
 auth,
 emailValue,
-password
+passwordValue
 );
 
 await setDoc(
@@ -636,7 +587,7 @@ err.message;
 
 }
 
-// USER
+// AUTH
 
 onAuthStateChanged(
 auth,
@@ -650,31 +601,34 @@ loginBox.style.display =
 panel.style.display =
 "block";
 
+// ONLINE USER
+
+await setDoc(
+doc(db,"onlineUsers",user.uid),
+{
+
+email:user.email,
+
+uid:user.uid,
+
+device:
+navigator.userAgent,
+
+lastSeen:
+new Date().toISOString(),
+
+online:true
+
+});
+
 const userRef =
 doc(db,"users",user.uid);
 
 const userSnap =
 await getDoc(userRef);
 
-if(!userSnap.exists()){
-
-await setDoc(userRef,{
-
-email:user.email,
-
-uid:user.uid,
-
-creditos:0
-
-});
-
-}
-
-const nuevoSnap =
-await getDoc(userRef);
-
 const datos =
-nuevoSnap.data();
+userSnap.data();
 
 creditos.innerHTML =
 datos.creditos || 0;
@@ -697,47 +651,6 @@ keysSnap.forEach((docu)=>{
 const data =
 docu.data();
 
-const ahora =
-new Date();
-
-const expira =
-new Date(data.expira);
-
-let restante =
-expira - ahora;
-
-if(restante <= 0){
-
-data.estado =
-"vencida";
-
-}
-
-const dispositivoActual =
-navigator.userAgent;
-
-if(
-data.antiShare &&
-data.deviceLock !=
-dispositivoActual
-){
-
-data.estado =
-"KEY COMPARTIDA";
-
-}
-
-let dias =
-Math.floor(
-restante / (1000*60*60*24)
-);
-
-if(dias < 0){
-
-dias = 0;
-
-}
-
 htmlKeys += `
 
 <div class="product">
@@ -749,15 +662,7 @@ htmlKeys += `
 </p>
 
 <p>
-📱 ${data.dispositivo}
-</p>
-
-<p>
 📌 ${data.estado}
-</p>
-
-<p>
-⏳ ${dias} días restantes
 </p>
 
 </div>
@@ -809,10 +714,6 @@ htmlCompras += `
  créditos
 </p>
 
-<p>
-⏳ ${data.duracion}
-</p>
-
 </div>
 
 `;
@@ -828,6 +729,29 @@ htmlCompras =
 
 historialCompras.innerHTML =
 htmlCompras;
+
+}
+
+});
+
+// CERRAR ONLINE
+
+window.addEventListener(
+"beforeunload",
+async()=>{
+
+const user =
+auth.currentUser;
+
+if(user){
+
+await deleteDoc(
+doc(
+db,
+"onlineUsers",
+user.uid
+)
+);
 
 }
 
@@ -862,8 +786,6 @@ cantidadCreditos.value
 let total =
 c * 50;
 
-// DESCUENTO
-
 if(descuentoActual > 0){
 
 total =
@@ -889,9 +811,7 @@ window.aplicarCupon =
 async function(){
 
 const codigo =
-document.getElementById(
-"cuponInput"
-).value
+cuponInput.value
 .toUpperCase();
 
 if(!codigo){
@@ -938,25 +858,14 @@ return;
 
 }
 
-// APLICAR
-
 descuentoActual =
 data.descuento;
 
-cuponActual =
-codigo;
-
 cuponEstado.innerHTML =
 
-"✅ Cupón aplicado: " +
-
-data.descuento +
-
-"% OFF";
+"✅ Cupón aplicado";
 
 calcularPrecio();
-
-// SUMAR USO
 
 await updateDoc(ref,{
 
@@ -973,6 +882,8 @@ console.log(err);
 
 }
 
+// METODOS
+
 window.mostrarMetodos =
 function(){
 
@@ -981,7 +892,7 @@ metodosPago.style.display =
 
 }
 
-// PAGOS
+// PAGO
 
 window.mostrarPago =
 function(titulo,info){
@@ -1039,14 +950,6 @@ try{
 const user =
 auth.currentUser;
 
-if(!user){
-
-alert("Inicia sesión");
-
-return;
-
-}
-
 let creditosActuales =
 Number(
 creditos.innerText
@@ -1075,7 +978,7 @@ creditosActuales - precio
 
 });
 
-// CREAR KEY
+// KEY
 
 await addDoc(
 collection(db,"keys"),
@@ -1095,21 +998,7 @@ uid:user.uid,
 email:user.email,
 
 creada:
-new Date().toISOString(),
-
-expira:
-new Date(
-Date.now() +
-(1000*60*60*24*30)
-).toISOString(),
-
-dispositivo:
-navigator.userAgent,
-
-antiShare:true,
-
-deviceLock:
-navigator.userAgent
+new Date().toISOString()
 
 });
 
@@ -1138,8 +1027,6 @@ creditos.innerHTML =
 
 creditosActuales - precio;
 
-// MOSTRAR KEY
-
 popupKey.style.display =
 "flex";
 
@@ -1147,12 +1034,6 @@ keyGenerada.innerHTML =
 nuevaKey;
 
 cerrarDuraciones();
-
-setTimeout(()=>{
-
-location.reload();
-
-},1500);
 
 }catch(err){
 
@@ -1186,27 +1067,6 @@ keyGenerada.innerText
 alert(
 "KEY COPIADA"
 );
-
-}
-
-// CARACTERISTICAS
-
-window.mostrarCaracteristicas =
-function(texto){
-
-popupCaracteristicas.style.display =
-"flex";
-
-contenidoCaracteristicas.innerHTML =
-texto;
-
-}
-
-window.cerrarCaracteristicas =
-function(){
-
-popupCaracteristicas.style.display =
-"none";
 
 }
 
