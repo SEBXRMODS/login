@@ -302,6 +302,19 @@ oninput="calcularPrecio()">
 Total: $0 COP
 </p>
 
+<!-- CUPON -->
+
+<input
+type="text"
+id="cuponInput"
+placeholder="Cupón">
+
+<button onclick="aplicarCupon()">
+Aplicar Cupón
+</button>
+
+<p id="cuponEstado"></p>
+
 <button onclick="mostrarMetodos()">
 Continuar
 </button>
@@ -462,6 +475,7 @@ doc,
 getDoc,
 setDoc,
 updateDoc,
+increment,
 collection,
 addDoc,
 query,
@@ -504,6 +518,9 @@ getAuth(app);
 
 const db =
 getFirestore(app);
+
+let descuentoActual = 0;
+let cuponActual = null;
 
 // GENERAR KEY
 
@@ -689,16 +706,12 @@ new Date(data.expira);
 let restante =
 expira - ahora;
 
-// EXPIRADA
-
 if(restante <= 0){
 
 data.estado =
 "vencida";
 
 }
-
-// ANTI SHARE
 
 const dispositivoActual =
 navigator.userAgent;
@@ -849,13 +862,114 @@ cantidadCreditos.value
 let total =
 c * 50;
 
+// DESCUENTO
+
+if(descuentoActual > 0){
+
+total =
+total -
+(total * descuentoActual / 100);
+
+}
+
 precioFinal.innerHTML =
 
 "Total: $" +
 
-total.toLocaleString() +
+Math.floor(total)
+.toLocaleString()
 
-" COP";
++ " COP";
+
+}
+
+// CUPON
+
+window.aplicarCupon =
+async function(){
+
+const codigo =
+document.getElementById(
+"cuponInput"
+).value
+.toUpperCase();
+
+if(!codigo){
+
+return;
+
+}
+
+try{
+
+const ref =
+doc(db,"coupons",codigo);
+
+const snap =
+await getDoc(ref);
+
+if(!snap.exists()){
+
+cuponEstado.innerHTML =
+"❌ Cupón inválido";
+
+return;
+
+}
+
+const data =
+snap.data();
+
+if(!data.activo){
+
+cuponEstado.innerHTML =
+"❌ Cupón desactivado";
+
+return;
+
+}
+
+if(data.usos >= data.maxUsos){
+
+cuponEstado.innerHTML =
+"❌ Cupón agotado";
+
+return;
+
+}
+
+// APLICAR
+
+descuentoActual =
+data.descuento;
+
+cuponActual =
+codigo;
+
+cuponEstado.innerHTML =
+
+"✅ Cupón aplicado: " +
+
+data.descuento +
+
+"% OFF";
+
+calcularPrecio();
+
+// SUMAR USO
+
+await updateDoc(ref,{
+
+usos:
+increment(1)
+
+});
+
+}catch(err){
+
+console.log(err);
+
+}
 
 }
 
@@ -938,8 +1052,6 @@ Number(
 creditos.innerText
 )||0;
 
-// SIN CREDITOS
-
 if(creditosActuales < precio){
 
 cerrarDuraciones();
@@ -950,15 +1062,11 @@ return;
 
 }
 
-// GENERAR KEY
-
 const nuevaKey =
 generarKey();
 
 const userRef =
 doc(db,"users",user.uid);
-
-// RESTAR CREDITOS
 
 await updateDoc(userRef,{
 
@@ -1026,8 +1134,6 @@ new Date()
 
 });
 
-// ACTUALIZAR CREDITOS
-
 creditos.innerHTML =
 
 creditosActuales - precio;
@@ -1040,11 +1146,7 @@ popupKey.style.display =
 keyGenerada.innerHTML =
 nuevaKey;
 
-// CERRAR
-
 cerrarDuraciones();
-
-// RECARGAR
 
 setTimeout(()=>{
 
